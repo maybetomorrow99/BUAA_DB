@@ -82,4 +82,4 @@ def logout(request):
     # del request.session['is_login']
     # del request.session['user_id']
     # del request.session['user_name']
-    return redirect("/index/")
+    return redirect("/index/") 
