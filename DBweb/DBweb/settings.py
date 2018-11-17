@@ -77,9 +77,9 @@ WSGI_APPLICATION = 'DBweb.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'dbweb',
+        'NAME': 'djangologintest',
         'USER': 'root',
-        'PASSWORD': 'liupin99',
+        'PASSWORD': 'Retr0123$%',
         'HOST': 'localhost',
         'PORT': '3306',
     }
