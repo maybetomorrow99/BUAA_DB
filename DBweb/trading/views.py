@@ -84,3 +84,4 @@ def logout(request):
     # del request.session['user_name']
     return redirect("/index/")
     # test git
+    # test git2
