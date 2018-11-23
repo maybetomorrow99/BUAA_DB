@@ -97,4 +97,5 @@ def view(request):
     return render(request, 'view/view.html')
 
 def shop(request):
+    a = 1
     return render(request, 'shop/shop.html')
