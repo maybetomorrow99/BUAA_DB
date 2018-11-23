@@ -1,19 +1,15 @@
+# -*- coding:utf8 -*-
 from django.db import models
 
 # Create your models here.
 class User(models.Model):
     '''用户表'''
 
-    gender = (
-        ('male', '男'),
-        ('female', '女'),
-    )
-
     name = models.CharField(max_length=128)
     account = models.CharField(max_length=128, unique=True)
     password = models.CharField(max_length=256)
-    credit = models.IntegerField()
-    mobile_number = models.IntegerField()
+    credit = models.IntegerField(null=True)
+    mobile_number = models.CharField(max_length=256)
     address = models.CharField(max_length=256)
     img_src = models.CharField(max_length=256)
     c_time = models.DateTimeField(auto_now_add=True)
