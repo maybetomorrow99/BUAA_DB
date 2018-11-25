@@ -1,6 +1,7 @@
 # -*- coding:utf8 -*-
 from django.db import models
 
+
 # Create your models here.
 class User(models.Model):
     '''用户表'''
@@ -21,3 +22,21 @@ class User(models.Model):
         ordering = ['c_time']
         verbose_name = '用户'
         verbose_name_plural = '用户'
+
+
+class Shop(models.Model):
+    '''店铺'''
+
+    shop_owner = models.IntegerField()
+
+
+class Goods(models.Model):
+    '''商品'''
+
+    shop_id = models.IntegerField()
+    price = models.FloatField()
+    quantity = models.IntegerField()
+    validity = models.BooleanField()
+    detail = models.CharField(max_length=256)
+    category = models.CharField(max_length=256)
+

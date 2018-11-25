@@ -87,14 +87,20 @@ def logout(request):
     # test git2
     # test git3
 
+
 def col(request):
     return render(request, 'col/col.html')
+
 
 def order(request):
     return render(request, 'order/order.html')
 
+
 def view(request):
+    goods_list = models.User.objects.all()
     return render(request, 'view/view.html')
+
 
 def shop(request):
     return render(request, 'shop/shop.html')
+

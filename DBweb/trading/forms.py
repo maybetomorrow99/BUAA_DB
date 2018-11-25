@@ -14,3 +14,11 @@ class RegisterForm(forms.Form):
     password2 = forms.CharField(label="确认密码", max_length=256, widget=forms.PasswordInput(attrs={'class': 'form-control'}))
     mobile_number = forms.CharField(label="联系电话", max_length=256, widget=forms.TextInput(attrs={'class': 'form-control'}))
     address = forms.CharField(label="地址", max_length=128, widget=forms.TextInput(attrs={'class': 'form-control'}))
+
+
+class goodsRegisterForm(forms.Form):
+
+    price = forms.FloatField(label="价格")
+    quantity = forms.IntegerField(label="数量")
+    detail = forms.CharField(label="描述",max_length=256)
+    category = forms.CharField(label="类别",max_length=256)
