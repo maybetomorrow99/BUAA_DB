@@ -3,6 +3,9 @@
 {% block content %}
     {% if request.session.is_login %}
     <h1>你好,{{ request.session.user_name }}！欢迎回来！</h1>
+    <a href="./register">
+    <button>Click me</button>
+    </a>
     {% else %}
     <img src="../../static/pic/login-warning.jpg" width="100%"/>
     {% endif %}

@@ -1,7 +1,7 @@
 # -*- coding:utf8 -*-
 from django.shortcuts import render, redirect
 from . import models
-from .forms import UserForm, RegisterForm
+from .forms import UserForm, RegisterForm,goodsRegisterForm
 
 def index(request):
     pass
@@ -103,4 +103,19 @@ def view(request):
 
 def shop(request):
     return render(request, 'shop/shop.html')
+
+def good_register(request):
+    if request.method == "POST":
+        good_register_form = goodsRegisterForm(request.POST)
+        if good_register_form.is_valid():  # 获取数据
+            price = good_register_form.cleaned_data['price']
+            quantity = good_register_form.cleaned_data['quantity']
+            detail = good_register_form.cleaned_data['detail']
+            category = good_register_form.cleaned_data['category']
+            new_good = models.Goods(price=price, quantity=quantity, validity=True,
+                                    detail=detail, category=category)
+            new_good.save()
+            return redirect('/shop/')
+    good_register_form = goodsRegisterForm()
+    return render(request,'shop/register.html',locals())
 

@@ -19,13 +19,14 @@ from django.conf.urls import url
 from trading import views
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^index/', views.index),
-    url(r'^login/', views.login),
-    url(r'^register/', views.register),
-    url(r'^logout/', views.logout),
-    url(r'^col/', views.col),
-    url(r'^order/', views.order),
-    url(r'^shop/', views.shop),
-    url(r'^view/', views.view),
+    url(r'^admin/$', admin.site.urls),
+    url(r'^index/$', views.index),
+    url(r'^login/$', views.login),
+    url(r'^register/$', views.register),
+    url(r'^logout/$', views.logout),
+    url(r'^col/$', views.col),
+    url(r'^order/$', views.order),
+    url(r'^shop/$', views.shop),
+    url(r'^view/$', views.view),
+    url(r'^shop/register/$',views.good_register),
 ]

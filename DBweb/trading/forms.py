@@ -18,7 +18,7 @@ class RegisterForm(forms.Form):
 
 class goodsRegisterForm(forms.Form):
 
-    price = forms.FloatField(label="价格")
-    quantity = forms.IntegerField(label="数量")
-    detail = forms.CharField(label="描述",max_length=256)
-    category = forms.CharField(label="类别",max_length=256)
+    price = forms.FloatField(label="价格",widget=forms.TextInput(attrs={'class': 'form-control'}))
+    quantity = forms.IntegerField(label="数量",widget=forms.TextInput(attrs={'class': 'form-control'}))
+    detail = forms.CharField(label="描述",max_length=256,widget=forms.TextInput(attrs={'class': 'form-control'}))
+    category = forms.CharField(label="类别",max_length=256,widget=forms.TextInput(attrs={'class': 'form-control'}))

@@ -37,33 +37,33 @@
          <div class="collapse navbar-collapse" id="my-nav">
           <ul class="nav navbar-nav">
             {% ifequal request.path '/view/' %}
-                <li class="active"><a href="../view/">商品浏览</a></li>
-                <li><a href="../shop/">我的店铺</a></li>
-                <li><a href="../col/">我的收藏</a></li>
-                <li><a href="../order/">订单查询</a></li>
+                <li class="active"><a href="http://localhost:8000/view/">商品浏览</a></li>
+                <li><a href="http://localhost:8000/shop/">我的店铺</a></li>
+                <li><a href="http://localhost:8000/col/">我的收藏</a></li>
+                <li><a href="http://localhost:8000/order/">订单查询</a></li>
             {% else %}
                 {% ifequal request.path '/shop/' %}
-                    <li><a href="../view/">商品浏览</a></li>
-                    <li class="active"><a href="../shop/">我的店铺</a></li>
-                    <li><a href="../col/">我的收藏</a></li>
-                    <li><a href="../order/">订单查询</a></li>
+                    <li><a href="http://localhost:8000/view/">商品浏览</a></li>
+                    <li class="active"><a href="http:/localhost:8000//shop/">我的店铺</a></li>
+                    <li><a href="http://localhost:8000/col/">我的收藏</a></li>
+                    <li><a href="http://localhost:8000/order/">订单查询</a></li>
                 {% else %}
                     {% ifequal request.path '/col/' %}
-                        <li><a href="../view/">商品浏览</a></li>
-                        <li><a href="../shop/">我的店铺</a></li>
-                        <li class="active"><a href="../col/">我的收藏</a></li>
-                        <li><a href="../order/">订单查询</a></li>
+                        <li><a href="http://localhost:8000/view/">商品浏览</a></li>
+                        <li><a href="http://localhost:8000/shop/">我的店铺</a></li>
+                        <li class="active"><a href="http://localhost:8000/col/">我的收藏</a></li>
+                        <li><a href="http://localhost:8000/order/">订单查询</a></li>
                     {% else %}
                         {% ifequal request.path '/order/' %}
-                            <li><a href="../view/">商品浏览</a></li>
-                            <li><a href="../shop/">我的店铺</a></li>
-                            <li><a href="../col/">我的收藏</a></li>
-                            <li class="active"><a href="../order/">订单查询</a></li>
+                            <li><a href="http://localhost:8000/view/">商品浏览</a></li>
+                            <li><a href="http://localhost:8000/shop/">我的店铺</a></li>
+                            <li><a href="http://localhost:8000/col/">我的收藏</a></li>
+                            <li class="active"><a href="http://localhost:8000/order/">订单查询</a></li>
                         {% else %}
-                            <li><a href="../view/">商品浏览</a></li>
-                            <li><a href="../shop/">我的店铺</a></li>
-                            <li><a href="../col/">我的收藏</a></li>
-                            <li><a href="../order/">订单查询</a></li>
+                            <li><a href="http://localhost:8000/view/">商品浏览</a></li>
+                            <li><a href="http://localhost:8000/shop/">我的店铺</a></li>
+                            <li><a href="http://localhost:8000/col/">我的收藏</a></li>
+                            <li><a href="http://localhost:8000/order/">订单查询</a></li>
                         {% endifequal %}
                     {% endifequal %}
                 {% endifequal %}
