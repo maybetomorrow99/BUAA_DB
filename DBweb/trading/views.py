@@ -22,7 +22,7 @@ def login(request):
                 user = models.User.objects.get(account=account)
                 if user.password == password:
                     request.session['is_login'] = True
-                    # request.session['user_id'] = user.id
+                    request.session['user_id'] = user.id
                     request.session['user_name'] = user.name
                     return redirect('/index/')
                 else:
@@ -68,6 +68,10 @@ def register(request):
                 # new_user.address = address
                 # new_user.credit = credit
                 new_user.save()
+
+                # 添加用户对应的店铺
+                new_shop = models.Shop(shop_owner=new_user.id)
+                new_shop.save()
                 return redirect('/login/')  # 自动跳转到登录页面
     register_form = RegisterForm()
     return render(request, 'login/register.html', locals())
@@ -104,18 +108,20 @@ def view(request):
 def shop(request):
     return render(request, 'shop/shop.html')
 
+
 def good_register(request):
     if request.method == "POST":
         good_register_form = goodsRegisterForm(request.POST)
         if good_register_form.is_valid():  # 获取数据
+            shop_id = models.Shop.objects.filter(shop_owner=request.session['user_id'])
             price = good_register_form.cleaned_data['price']
             quantity = good_register_form.cleaned_data['quantity']
             detail = good_register_form.cleaned_data['detail']
             category = good_register_form.cleaned_data['category']
-            new_good = models.Goods(price=price, quantity=quantity, validity=True,
+            new_good = models.Goods(shop_id=1, price=price, quantity=quantity, validity=True,
                                     detail=detail, category=category)
+            # 存在问题
             new_good.save()
             return redirect('/shop/')
     good_register_form = goodsRegisterForm()
-    return render(request,'shop/register.html',locals())
-
+    return render(request, 'shop/register.html', locals())
