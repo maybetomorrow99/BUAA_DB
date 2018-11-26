@@ -113,15 +113,16 @@ def good_register(request):
     if request.method == "POST":
         good_register_form = goodsRegisterForm(request.POST)
         if good_register_form.is_valid():  # 获取数据
-            shop_id = models.Shop.objects.filter(shop_owner=request.session['user_id'])
+            shop_id = models.Shop.objects.filter(shop_owner=request.session['user_id'])[0].id
             price = good_register_form.cleaned_data['price']
             quantity = good_register_form.cleaned_data['quantity']
             detail = good_register_form.cleaned_data['detail']
             category = good_register_form.cleaned_data['category']
-            new_good = models.Goods(shop_id=1, price=price, quantity=quantity, validity=True,
+            new_good = models.Goods(shop_id=shop_id, price=price, quantity=quantity, validity=True,
                                     detail=detail, category=category)
-            # 存在问题
             new_good.save()
             return redirect('/shop/')
     good_register_form = goodsRegisterForm()
     return render(request, 'shop/register.html', locals())
+
+
