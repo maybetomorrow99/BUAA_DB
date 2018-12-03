@@ -1,7 +1,61 @@
 {% extends '../login/base.html' %}
 {% block title %}商品浏览{% endblock %}
 {% block content %}
+
+<script type="text/javascript" src="/static/js/jquery.cookie.js"></script>(当然不能忘记js)
+<script type="text/javascript">
+        var csrftoken = $.cookie('csrftoken');
+
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+        $.ajaxSetup({  //设置ajax发送之前做的操作，在data里面加上一个键值对
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+        function Parsefunc(dataname){
+//		var dataname = $(this).attr('name');
+		alert(dataname);
+		$.ajax({
+			url:"/view/get_detail/",
+			type:"POST",
+			contentType: "application/json",
+			data:JSON.stringify({
+				'data':dataname
+			}),
+			success:function(response){
+				window.wxc.xcConfirm("成功", window.wxc.xcConfirm.typeEnum.success);
+			},
+	    	error:function(response){
+	    		window.wxc.xcConfirm("失败", window.wxc.xcConfirm.typeEnum.error);
+	    	}
+		})
+	}
+</script>
+
     {% if request.session.is_login %}
+
+    <h2>test goods_list</h2>
+    {% if goods_list %}
+        {% for item in goods_list %}
+        <h3>detail {{item.detail}}</h3>
+        <li>price {{item.price}}</li>
+        <li>quantity {{item.quantity}}</li>
+        <li>category {{item.category}}</li>
+        <div class='mt50 ml32'>
+	        <button class="btn btn-info btn-xs" name="{{item.id}}"  onclick="Parsefunc(this.name)">增加</button>
+	    </div>
+
+        {% endfor %}
+    {% else %}
+    <p>There are no goods in the library</p>
+    {% endif %}
+    <p></p>
+
     <div class="container">
         <div class="row" >
             <div class="col-md-2" style="background-color: #dedef8; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">

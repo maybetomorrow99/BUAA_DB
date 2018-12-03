@@ -4,7 +4,9 @@ from django.db import models
 
 # Create your models here.
 class User(models.Model):
-    '''用户表'''
+    """
+    用户表
+    """
 
     name = models.CharField(max_length=128)
     account = models.CharField(max_length=128, unique=True)
@@ -25,13 +27,17 @@ class User(models.Model):
 
 
 class Shop(models.Model):
-    '''店铺'''
+    """
+    商铺表
+    """
 
     shop_owner = models.IntegerField()
 
 
 class Goods(models.Model):
-    '''商品'''
+    """
+    商品表
+    """
 
     shop_id = models.IntegerField()
     price = models.FloatField()
@@ -39,4 +45,17 @@ class Goods(models.Model):
     validity = models.BooleanField()
     detail = models.CharField(max_length=256)
     category = models.CharField(max_length=256)
+
+
+# class Order(models.Model):
+#     """
+#     订单表
+#     """
+#
+#     submit_time = DateTimeField(auto_now_add=True)
+#     shop_id = models.IntegerField()
+#     goods_id = models.IntegerField()
+#     status = models.IntegerField()  # 0 卖家未确认， 1 卖家确认，订单正在进行， 2 订单完成
+
+
 

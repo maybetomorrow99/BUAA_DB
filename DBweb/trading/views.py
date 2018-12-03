@@ -2,13 +2,36 @@
 from django.shortcuts import render, redirect
 from . import models
 from .forms import UserForm, RegisterForm,goodsRegisterForm
+from rest_framework.decorators import api_view
+from django.views.decorators.csrf import csrf_exempt
+
+@api_view(['GET', 'POST'])
+def get_detail(request):
+    if request.method == 'POST':
+        info = request.data.get('data')
+        inf = request.data
+        print(info)
+        print(inf)
+    return render(request, 'view/view.html')
+
 
 def index(request):
+    """
+    initial page
+    :param request:
+    :return:
+    """
     pass
     return render(request, 'login/index.html')
 
 
 def login(request):
+    """
+    user login
+    :param request:
+    :return:
+    """
+
     if request.session.get('is_login', None):
         return redirect('/index')
 
@@ -36,6 +59,12 @@ def login(request):
 
 
 def register(request):
+    """
+    user register
+    :param request:
+    :return:
+    """
+
     if request.session.get('is_login', None):
         # 登录状态不允许注册。你可以修改这条原则！
         return redirect("/index/")
@@ -78,6 +107,12 @@ def register(request):
 
 
 def logout(request):
+    """
+    user logout
+    :param request:
+    :return:
+    """
+
     if not request.session.get('is_login', None):
         # 如果本来就未登录，也就没有登出一说
         return redirect("/index/")
@@ -93,23 +128,46 @@ def logout(request):
 
 
 def col(request):
+    """
+    collection
+    :param request:
+    :return:
+    """
     return render(request, 'col/col.html')
 
 
 def order(request):
+    view(request)
     return render(request, 'order/order.html')
 
-
+@csrf_exempt
 def view(request):
-    goods_list = models.User.objects.all()
-    return render(request, 'view/view.html')
+    """
+    display the goods in the database on the page
+    :param request:
+    :return:
+    """
+
+    goods_list = models.Goods.objects.all()
+    return render(request, 'view/view.html', {'goods_list': goods_list})
 
 
 def shop(request):
+    """
+
+    :param request:
+    :return:
+    """
     return render(request, 'shop/shop.html')
 
 
 def good_register(request):
+    """
+    register the item in the library
+    :param request:
+    :return:
+    """
+
     if request.method == "POST":
         good_register_form = goodsRegisterForm(request.POST)
         if good_register_form.is_valid():  # 获取数据
