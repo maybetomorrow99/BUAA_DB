@@ -62,9 +62,38 @@
                                     <li>category {{item.category}}</li>
                                 </div>
                                 <div class="col-md-4" style="background-color: #B18904; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
-                                    <button type="button" class="btn btn-primary" name="{{item.id}}"  onclick="Parsefunc(this.name)">查看详情</button>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal{{item.id}}">查看详情</button>
+                                    <div class="modal fade" id="myModal{{item.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                    <h4 class="modal-title" id="myModalLabel">商品详情</h4>
+                                                </div>
+                                                <div class="modal-body">{{item.detail}}</div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                                </div>
+                                            </div><!-- /.modal-content -->
+                                        </div><!-- /.modal -->
+                                    </div>
                                     <button type="button" class="btn btn-waining">修改商品</button>
-                                    <button type="button" class="btn btn-danger">商品下架</button>
+                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModalDel{{item.id}}">商品下架</button>
+                                    <div class="modal fade" id="myModalDel{{item.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabelDel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                    <h4 class="modal-title" id="myModalLabelDel">WARNING!!</h4>
+                                                </div>
+                                                <div class="modal-body">是否确定要删除该商品？</div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                                    <button type="button" class="btn btn-primary" onclick="Parsefunc({{item.id}})">确定</button>
+                                                </div>
+                                            </div><!-- /.modal-content -->
+                                        </div><!-- /.modal -->
+                                    </div>
                                 </div>
                             </div>
                         </div>
