@@ -4,6 +4,7 @@ from . import models
 from .forms import UserForm, RegisterForm,goodsRegisterForm
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 @api_view(['GET', 'POST'])
 def get_detail(request):
@@ -140,6 +141,7 @@ def order(request):
     view(request)
     return render(request, 'order/order.html')
 
+
 @csrf_exempt
 def view(request):
     """
@@ -148,8 +150,43 @@ def view(request):
     :return:
     """
 
-    goods_list = models.Goods.objects.all()
-    return render(request, 'view/view.html', {'goods_list': goods_list})
+    # goods_list = models.Goods.objects.all()
+    # return render(request, 'view/view.html', {'goods_list': goods_list})
+    content = {}
+    goods = models.Goods.objects.all()
+    page_robot = Paginator(goods, 4)
+    page_num = request.get("page")
+    try:
+        goods_list = page_robot.page(page_num)
+    except EmptyPage:
+        goods_list = page_robot.page(1)
+    except PageNotAnInteger:
+        goods_list = page_robot.page(1)
+    content["goods"] = goods
+    content["goods_list"] = goods_list
+    content["page_robot"] = get_num_paginator(page_robot, goods_list.number, 7)
+    return render(request, 'view/view.html', content)
+
+
+def get_num_paginator(page_robot, num, total):
+    """
+    分页函数
+    :param page_robot:
+    :param num:
+    :param total:
+    :return:
+    """
+
+    if page_robot.num_pages < total:
+        return page_robot.page_range
+    left_right = total//2
+    num_index = page_robot.page_range.index(num)
+    if num_index < left_right:
+        return page_robot.page_range[0: total]
+    elif page_robot.num_pages - num_index - 1 < left_right:
+        return page_robot.page_range[-total:]
+    else:
+        return page_robot.page_range[num_index - left_right: num_index + left_right + 1]
 
 
 def shop(request):
