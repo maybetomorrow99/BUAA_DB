@@ -47,6 +47,15 @@ class Goods(models.Model):
     category = models.CharField(max_length=256)
 
 
+class UserFavourites(models.Model):
+    """
+    收藏夹
+    """
+    user_id = models.IntegerField()
+    goods_id = models.IntegerField()
+    c_time = models.DateTimeField(auto_now_add=True)
+
+
 # class Order(models.Model):
 #     """
 #     订单表

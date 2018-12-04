@@ -266,3 +266,33 @@ def goods_modify(request):
     except models.Goods.DoesNotExist:
         goods_register_form = GoodsRegisterForm()
     return render(request, 'shop/modify.html', locals())
+
+
+@api_view(['GET', 'POST'])
+def goods_del(request):
+    """
+    goods delete
+    :param request:
+    :return:
+    """
+    if request.method == 'POST':
+        goods_id = request.data.get('data')
+        goods_obj = models.Goods.objects.get(id=goods_id)
+        goods_obj.delete()
+    return render(request, 'shop/shop.html')
+
+
+@api_view(['GET', 'POST'])
+def add_favourites(request):
+    if request.method == 'POST':
+        user_id = request.session['user_id']
+        goods_id = request.data.get('data')
+
+        same_favourites = models.UserFavourites.objects.filter(user_id=user_id, goods_id=goods_id)
+        if same_favourites:
+            print("不能重复添加")
+            return render(request, 'view/view.html')
+        print(user_id, goods_id)
+        new_favor = models.UserFavourites(user_id=user_id, goods_id=goods_id)
+        new_favor.save()
+    return render(request, 'view/view.html')

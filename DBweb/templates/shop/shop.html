@@ -15,11 +15,10 @@
                 }
             }
         });
-        function Parsefunc(dataname){
-//		var dataname = $(this).attr('name');
-		alert(dataname);
+        function goods_del(dataname){
+//		alert(dataname);
 		$.ajax({
-			url:"/view/get_detail/",
+			url:"/shop/goods_del/",
 			type:"POST",
 			contentType: "application/json",
 			data:JSON.stringify({
@@ -88,7 +87,7 @@
                                                 <div class="modal-body">是否确定要删除该商品？</div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                                                    <button type="button" class="btn btn-primary" onclick="Parsefunc({{item.id}})">确定</button>
+                                                    <button type="button" class="btn btn-primary" onclick="goods_del({{item.id}})">确定</button>
                                                 </div>
                                             </div><!-- /.modal-content -->
                                         </div><!-- /.modal -->
