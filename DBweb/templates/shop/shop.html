@@ -46,7 +46,6 @@
                         <span class="label label-primary">你好,{{ request.session.user_name }}！欢迎回来！</span>
                         <a href="./register"><button type="button" class="btn btn-primary">商品上架</button></a>
                     </h1>
-                    <h1><span class="label label-primary">你的店铺中暂无商品</span></h1>
                     {% for item in goods_list %}
                     <div class="row">
                         <div class="col-md-3" style="background-color: #B18904; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
@@ -81,19 +80,19 @@
                 {% if goods_list.number == 1 %}
                     <li class="disabled"><a href="#">&laquo;</a></li>
                 {% else %}
-                    <li><a href="/view/?page={{goods_list.number|add:-1}}">&laquo;</a></li>
+                    <li><a href="/shop/?page={{goods_list.number|add:-1}}">&laquo;</a></li>
                 {% endif %}
                 {% for i in total_number %}
                     {% if i == goods_list.number %}
-                        <li class="active"><a href="/view/?page={{i}}">{{i}}</a></li>
+                        <li class="active"><a href="/shop/?page={{i}}">{{i}}</a></li>
                     {% else %}
-                        <li><a href="/view/?page={{i}}">{{i}}</a></li>
+                        <li><a href="/shop/?page={{i}}">{{i}}</a></li>
                     {% endif %}
                 {% endfor %}
                 {% if goods_list.number == page_robot.num_pages %}
                     <li class="disabled"><a href="#">&raquo;</a></li>
                 {% else %}
-                    <li><a href="/view/?page={{goods_list.number|add:1}}">&raquo;</a></li>
+                    <li><a href="/shop/?page={{goods_list.number|add:1}}">&raquo;</a></li>
                 {% endif %}
             </ul>
         </div>

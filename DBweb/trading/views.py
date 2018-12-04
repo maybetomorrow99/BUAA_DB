@@ -198,7 +198,21 @@ def shop(request):
     :param request:
     :return:
     """
-    return render(request, 'shop/shop.html')
+    content = {}
+    goods = models.Goods.objects.all()
+    page_robot = Paginator(goods, 4)
+    page_num = request.GET.get("page")
+    try:
+        goods_list = page_robot.page(page_num)
+    except EmptyPage:
+        goods_list = page_robot.page(1)
+    except PageNotAnInteger:
+        goods_list = page_robot.page(1)
+    content["goods"] = goods
+    content["goods_list"] = goods_list
+    content["page_robot"] = page_robot
+    content["total_number"] = get_num_paginator(page_robot, goods_list.number, 7)
+    return render(request, 'shop/shop.html',content)
 
 
 def good_register(request):
