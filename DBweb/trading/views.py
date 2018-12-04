@@ -155,7 +155,7 @@ def view(request):
     content = {}
     goods = models.Goods.objects.all()
     page_robot = Paginator(goods, 4)
-    page_num = request.get("page")
+    page_num = request.GET.get("page")
     try:
         goods_list = page_robot.page(page_num)
     except EmptyPage:
@@ -164,7 +164,8 @@ def view(request):
         goods_list = page_robot.page(1)
     content["goods"] = goods
     content["goods_list"] = goods_list
-    content["page_robot"] = get_num_paginator(page_robot, goods_list.number, 7)
+    content["page_robot"] = page_robot
+    content["total_number"]=get_num_paginator(page_robot, goods_list.number, 7)
     return render(request, 'view/view.html', content)
 
 
@@ -188,7 +189,9 @@ def get_num_paginator(page_robot, num, total):
     else:
         return page_robot.page_range[num_index - left_right: num_index + left_right + 1]
 
+def test(request):
 
+    return render(request, 'login/test.html')
 def shop(request):
     """
 
