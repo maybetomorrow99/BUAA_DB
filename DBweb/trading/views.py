@@ -279,7 +279,7 @@ def goods_del(request):
         goods_id = request.data.get('data')
         goods_obj = models.Goods.objects.get(id=goods_id)
         goods_obj.delete()
-    return render(request, 'shop/shop.html')
+        return render(request, 'shop/shop.html')
 
 
 @api_view(['GET', 'POST'])
