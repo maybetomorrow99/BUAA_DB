@@ -34,6 +34,9 @@
 	    		window.wxc.xcConfirm("失败", window.wxc.xcConfirm.typeEnum.error);
 	    	}
 		})
+		$('body').on('hidden.bs.modal', '.modal', function () {
+            $(this).removeData('bs.modal');
+        });
 	}
 </script>
     {% if request.session.is_login %}
@@ -59,7 +62,21 @@
                                 <li>category {{item.category}}</li>
                             </div>
                             <div class="col-md-4" style="background-color: #B18904; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
-                                <button type="button" class="btn btn-primary" name="{{item.id}}"  onclick="Parsefunc(this.name)">查看详情</button>
+                                <button type="button" class="btn btn-primary" name="{{item.id}}" data-toggle="modal" data-target="#myModal{{item.id}}">查看详情</button>
+                                <div class="modal fade" id="myModal{{item.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                <h4 class="modal-title" id="myModalLabel">商品详情</h4>
+                                            </div>
+                                            <div class="modal-body">{{item.detail}}</div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                            </div>
+                                        </div><!-- /.modal-content -->
+                                    </div><!-- /.modal -->
+                                </div>
                                 <button type="button" class="btn btn-success">购买/租赁</button>
                                 <button type="button" class="btn btn-info">加入收藏</button>
                             </div>
