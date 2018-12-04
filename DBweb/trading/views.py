@@ -212,7 +212,7 @@ def shop(request):
     return render(request, 'shop/shop.html',content)
 
 
-def good_register(request):
+def goods_register(request):
     """
     register the item in the library
     :param request:
@@ -220,44 +220,49 @@ def good_register(request):
     """
 
     if request.method == "POST":
-        good_register_form = GoodsRegisterForm(request.POST)
-        if good_register_form.is_valid():  # 获取数据
+        goods_register_form = GoodsRegisterForm(request.POST)
+        if goods_register_form.is_valid():  # 获取数据
             shop_id = models.Shop.objects.filter(shop_owner=request.session['user_id'])[0].id
-            price = good_register_form.cleaned_data['price']
-            quantity = good_register_form.cleaned_data['quantity']
-            detail = good_register_form.cleaned_data['detail']
-            category = good_register_form.cleaned_data['category']
+            price = goods_register_form.cleaned_data['price']
+            quantity = goods_register_form.cleaned_data['quantity']
+            detail = goods_register_form.cleaned_data['detail']
+            category = goods_register_form.cleaned_data['category']
             new_good = models.Goods(shop_id=shop_id, price=price, quantity=quantity, validity=True,
                                     detail=detail, category=category)
             new_good.save()
             return redirect('/shop/')
-    good_register_form = GoodsRegisterForm()
+    goods_register_form = GoodsRegisterForm()
     return render(request, 'shop/register.html', locals())
 
 
-def good_modify(request):
+def goods_modify(request):
+    """
+    modify goods
+    :param request:
+    :return:
+    """
     if request.method == "POST":
-        good_register_form = GoodsRegisterForm(request.POST)
-        if good_register_form.is_valid():  # 获取数据
+        goods_register_form = GoodsRegisterForm(request.POST)
+        if goods_register_form.is_valid():  # 获取数据
             goods_id = request.session['cur_goods_id']
             try:
                 goods = models.Goods.objects.get(id=goods_id)
             except models.Goods.DoesNotExist:
                 return redirect('/col/')
-            goods.price = good_register_form.cleaned_data['price']
-            goods.quantity = good_register_form.cleaned_data['quantity']
-            goods.detail = good_register_form.cleaned_data['detail']
-            goods.category = good_register_form.cleaned_data['category']
+            goods.price = goods_register_form.cleaned_data['price']
+            goods.quantity = goods_register_form.cleaned_data['quantity']
+            goods.detail = goods_register_form.cleaned_data['detail']
+            goods.category = goods_register_form.cleaned_data['category']
             goods.save()
             return redirect('/shop/')
     try:
         goods_id = request.GET.get('id')
         goods_obj = models.Goods.objects.get(id=goods_id)
-        good_register_form = GoodsRegisterForm(initial={'price': goods_obj.detail,
+        goods_register_form = GoodsRegisterForm(initial={'price': goods_obj.detail,
                                                         'quantity': goods_obj.quantity,
                                                         'detail': goods_obj.detail,
                                                         'category': goods_obj.category})
-        request.session['cur_goods_id'] = goods_id
+        request.session['cur_goods_id'] = goods_id  # 用session保留goods_id的访问
     except models.Goods.DoesNotExist:
-        good_register_form = GoodsRegisterForm()
+        goods_register_form = GoodsRegisterForm()
     return render(request, 'shop/modify.html', locals())
