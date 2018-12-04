@@ -1,11 +1,119 @@
 {% extends '../login/base.html' %}
 {% block title %}我的店铺{% endblock %}
 {% block content %}
+<script type="text/javascript" src="/static/js/jquery.cookie.js"></script>
+<script type="text/javascript">
+        var csrftoken = $.cookie('csrftoken');
+
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+        $.ajaxSetup({  //设置ajax发送之前做的操作，在data里面加上一个键值对
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+        function Parsefunc(dataname){
+//		var dataname = $(this).attr('name');
+		alert(dataname);
+		$.ajax({
+			url:"/view/get_detail/",
+			type:"POST",
+			contentType: "application/json",
+			data:JSON.stringify({
+				'data':dataname
+			}),
+			success:function(response){
+				window.wxc.xcConfirm("成功", window.wxc.xcConfirm.typeEnum.success);
+			},
+	    	error:function(response){
+	    		window.wxc.xcConfirm("失败", window.wxc.xcConfirm.typeEnum.error);
+	    	}
+		})
+	}
+</script>
     {% if request.session.is_login %}
-    <h1>你好,{{ request.session.user_name }}！欢迎回来！</h1>
-    <a href="./register">
-    <button>Click me</button>
-    </a>
+    {% if goods_list %}
+        <div class="container">
+            <div class="row" >
+                <div class="col-md-2" style="background-color: #dedef8; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
+                </div>
+                <div class="col-md-8" style="background-color: #dedef8; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
+                    <h1>
+                        <span class="label label-primary">你好,{{ request.session.user_name }}！欢迎回来！</span>
+                        <a href="./register"><button type="button" class="btn btn-primary">商品上架</button></a>
+                    </h1>
+                    <h1><span class="label label-primary">你的店铺中暂无商品</span></h1>
+                    {% for item in goods_list %}
+                    <div class="row">
+                        <div class="col-md-3" style="background-color: #B18904; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
+                            <li></li>
+                            <img src="http://img10.360buyimg.com/n1/s450x450_jfs/t1/3405/18/3537/69901/5b997c0aE5dc8ed9f/a2c208410ae84d1f.jpg" width="100%" height="100%"/>
+                            <li></li>
+                        </div>
+                        <div class="col-md-9" style="background-color: #B18904; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
+                            <div class="row">
+                                <div class="col-md-8" style="background-color: #B18904; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
+                                    <h3>detail {{item.detail}}</h3>
+                                    <li>price {{item.price}}</li>
+                                    <li>quantity {{item.quantity}}</li>
+                                    <li>category {{item.category}}</li>
+                                </div>
+                                <div class="col-md-4" style="background-color: #B18904; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
+                                    <button type="button" class="btn btn-primary" name="{{item.id}}"  onclick="Parsefunc(this.name)">查看详情</button>
+                                    <button type="button" class="btn btn-waining">修改商品</button>
+                                    <button type="button" class="btn btn-danger">商品下架</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="col-md-2" style="background-color: #dedef8; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <ul class="pagination" style="margin-left: 50%;transform:translate(-50%,0)">
+                {% if goods_list.number == 1 %}
+                    <li class="disabled"><a href="#">&laquo;</a></li>
+                {% else %}
+                    <li><a href="/view/?page={{goods_list.number|add:-1}}">&laquo;</a></li>
+                {% endif %}
+                {% for i in total_number %}
+                    {% if i == goods_list.number %}
+                        <li class="active"><a href="/view/?page={{i}}">{{i}}</a></li>
+                    {% else %}
+                        <li><a href="/view/?page={{i}}">{{i}}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if goods_list.number == page_robot.num_pages %}
+                    <li class="disabled"><a href="#">&raquo;</a></li>
+                {% else %}
+                    <li><a href="/view/?page={{goods_list.number|add:1}}">&raquo;</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    {% else %}
+        <div class="container">
+            <div class="row" >
+                <div class="col-md-2" style="background-color: #dedef8; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
+                </div>
+                <div class="col-md-8" style="background-color: #dedef8; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
+                    <h1>
+                        <span class="label label-primary">你好,{{ request.session.user_name }}！欢迎回来！</span>
+                        <a href="./register"><button type="button" class="btn btn-primary">商品上架</button></a>
+                    </h1>
+                    <h1><span class="label label-primary">你的店铺中暂无商品</span></h1>
+                </div>
+                <div class="col-md-2" style="background-color: #dedef8; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
+                </div>
+            </div>
+        </div>
+    {% endif %}
     {% else %}
     <img src="../../static/pic/login-warning.jpg" width="100%"/>
     {% endif %}

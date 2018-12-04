@@ -36,18 +36,11 @@
 		})
 	}
 </script>
-
     {% if request.session.is_login %}
-    <h2>test goods_list</h2>
     {% if goods_list %}
     <div class="container">
         <div class="row" >
             <div class="col-md-2" style="background-color: #dedef8; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
             </div>
             <div class="col-md-8" style="background-color: #dedef8; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
                 {% for item in goods_list %}
@@ -76,32 +69,27 @@
                 {% endfor %}
             </div>
             <div class="col-md-2" style="background-color: #dedef8; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
             </div>
         </div>
     </div>
     <div class="col-md-12">
         <ul class="pagination" style="margin-left: 50%;transform:translate(-50%,0)">
             {% if goods_list.number == 1 %}
-                <li class="disabled"><a href="#">《</a></li>
+                <li class="disabled"><a href="#">&laquo;</a></li>
             {% else %}
-                <li><a href="/list/?page={{goods_list.number|add:-1}}">《</a></li>
+                <li><a href="/view/?page={{goods_list.number|add:-1}}">&laquo;</a></li>
             {% endif %}
             {% for i in total_number %}
                 {% if i == goods_list.number %}
-                    <li class="active"><a href="/list/?page={{i}}">{{i}}</a></li>
+                    <li class="active"><a href="/view/?page={{i}}">{{i}}</a></li>
                 {% else %}
-                    <li><a href="/list/?page={{i}}">{{i}}</a></li>
+                    <li><a href="/view/?page={{i}}">{{i}}</a></li>
                 {% endif %}
             {% endfor %}
             {% if goods_list.number == page_robot.num_pages %}
-                <li class="disabled"><a href="#">》</a></li>
+                <li class="disabled"><a href="#">&raquo;</a></li>
             {% else %}
-                <li><a href="/list/?page={{goods_list.number|add:1}}">&raquo;</a></li>
+                <li><a href="/view/?page={{goods_list.number|add:1}}">&raquo;</a></li>
             {% endif %}
         </ul>
     </div>
