@@ -29,5 +29,6 @@ urlpatterns = [
     url(r'^shop/$', views.shop),
     url(r'^view/$', views.view),
     url(r'^view/get_detail/$', views.get_detail),
-    url(r'^shop/register/$',views.good_register),
+    url(r'^shop/register/$', views.good_register),
+    url(r'^shop/modify/', views.good_modify),
 ]

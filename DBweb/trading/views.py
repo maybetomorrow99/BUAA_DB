@@ -1,10 +1,11 @@
 # -*- coding:utf8 -*-
 from django.shortcuts import render, redirect
 from . import models
-from .forms import UserForm, RegisterForm,goodsRegisterForm
+from .forms import UserForm, RegisterForm, GoodsRegisterForm
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 
 @api_view(['GET', 'POST'])
 def get_detail(request):
@@ -130,7 +131,7 @@ def logout(request):
 
 def col(request):
     """
-    collection
+    my collection
     :param request:
     :return:
     """
@@ -150,8 +151,6 @@ def view(request):
     :return:
     """
 
-    # goods_list = models.Goods.objects.all()
-    # return render(request, 'view/view.html', {'goods_list': goods_list})
     content = {}
     goods = models.Goods.objects.all()
     page_robot = Paginator(goods, 4)
@@ -165,7 +164,7 @@ def view(request):
     content["goods"] = goods
     content["goods_list"] = goods_list
     content["page_robot"] = page_robot
-    content["total_number"]=get_num_paginator(page_robot, goods_list.number, 7)
+    content["total_number"]= get_num_paginator(page_robot, goods_list.number, 7)
     return render(request, 'view/view.html', content)
 
 
@@ -189,9 +188,7 @@ def get_num_paginator(page_robot, num, total):
     else:
         return page_robot.page_range[num_index - left_right: num_index + left_right + 1]
 
-def test(request):
 
-    return render(request, 'login/test.html')
 def shop(request):
     """
 
@@ -223,7 +220,7 @@ def good_register(request):
     """
 
     if request.method == "POST":
-        good_register_form = goodsRegisterForm(request.POST)
+        good_register_form = GoodsRegisterForm(request.POST)
         if good_register_form.is_valid():  # 获取数据
             shop_id = models.Shop.objects.filter(shop_owner=request.session['user_id'])[0].id
             price = good_register_form.cleaned_data['price']
@@ -234,7 +231,33 @@ def good_register(request):
                                     detail=detail, category=category)
             new_good.save()
             return redirect('/shop/')
-    good_register_form = goodsRegisterForm()
+    good_register_form = GoodsRegisterForm()
     return render(request, 'shop/register.html', locals())
 
 
+def good_modify(request):
+    if request.method == "POST":
+        good_register_form = GoodsRegisterForm(request.POST)
+        if good_register_form.is_valid():  # 获取数据
+            goods_id = request.session['cur_goods_id']
+            try:
+                goods = models.Goods.objects.get(id=goods_id)
+            except models.Goods.DoesNotExist:
+                return redirect('/col/')
+            goods.price = good_register_form.cleaned_data['price']
+            goods.quantity = good_register_form.cleaned_data['quantity']
+            goods.detail = good_register_form.cleaned_data['detail']
+            goods.category = good_register_form.cleaned_data['category']
+            goods.save()
+            return redirect('/shop/')
+    try:
+        goods_id = request.GET.get('id')
+        goods_obj = models.Goods.objects.get(id=goods_id)
+        good_register_form = GoodsRegisterForm(initial={'price': goods_obj.detail,
+                                                        'quantity': goods_obj.quantity,
+                                                        'detail': goods_obj.detail,
+                                                        'category': goods_obj.category})
+        request.session['cur_goods_id'] = goods_id
+    except models.Goods.DoesNotExist:
+        good_register_form = GoodsRegisterForm()
+    return render(request, 'shop/modify.html', locals())

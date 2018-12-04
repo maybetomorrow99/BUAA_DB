@@ -1,0 +1,38 @@
+{% extends 'login/base.html' %}
+{% block title %}商品修改{% endblock %}
+{% block content %}
+
+    <div class="container">
+        <div class="col-md-4 col-md-offset-4">
+          <form class='form-register' action="/shop/modify/" method="POST">
+              {% if message %}
+                  <div class="alert alert-warning">{{ message }}</div>
+              {% endif %}
+
+              {% csrf_token %}
+
+              <h2 class="text-center">商品修改</h2>
+              <div class="form-group">
+                  {{ good_register_form.price.label_tag }}
+                  {{ good_register_form.price}}
+              </div>
+              <div class="form-group">
+                  {{ good_register_form.quantity.label_tag }}
+                  {{ good_register_form.quantity}}
+              </div>
+              <div class="form-group">
+                  {{ good_register_form.detail.label_tag }}
+                  {{ good_register_form.detail }}
+              </div>
+              <div class="form-group">
+                  {{ good_register_form.category.label_tag }}
+                  {{ good_register_form.category }}
+              </div>
+
+              <button type="reset" class="btn btn-default pull-left">重置</button>
+              <button type="submit" class="btn btn-primary pull-right">提交</button>
+
+          </form>
+        </div>
+    </div> <!-- /container -->
+{% endblock %}

@@ -4,7 +4,6 @@
 <script type="text/javascript" src="/static/js/jquery.cookie.js"></script>
 <script type="text/javascript">
         var csrftoken = $.cookie('csrftoken');
-
         function csrfSafeMethod(method) {
             // these HTTP methods do not require CSRF protection
             return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
@@ -77,7 +76,7 @@
                                             </div><!-- /.modal-content -->
                                         </div><!-- /.modal -->
                                     </div>
-                                    <button type="button" class="btn btn-waining">修改商品</button>
+                                    <a href="modify/?id={{item.id}}"> <button type="button" class="btn btn-waining">修改商品</button></a>
                                     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModalDel{{item.id}}">商品下架</button>
                                     <div class="modal fade" id="myModalDel{{item.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabelDel" aria-hidden="true">
                                         <div class="modal-dialog">
