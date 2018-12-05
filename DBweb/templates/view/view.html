@@ -26,6 +26,7 @@
 			}),
 			success:function(response){
 //				window.wxc.xcConfirm("成功", window.wxc.xcConfirm.typeEnum.success);
+
 			},
 	    	error:function(response){
 //	    		window.wxc.xcConfirm("失败", window.wxc.xcConfirm.typeEnum.error);
@@ -40,25 +41,26 @@
     {% if goods_list %}
     <div class="container">
         <div class="row" >
-            <div class="col-md-2" style="background-color: #dedef8; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
+            <div class="col-md-2" style="background-color: #FFFFFF;">
             </div>
-            <div class="col-md-8" style="background-color: #dedef8; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
+            <div class="col-md-8" style="background-color: #FFFFFF;">
                 {% for item in goods_list %}
                 <div class="row">
-                    <div class="col-md-3" style="background-color: #B18904; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
-                        <li></li>
+                    <div class="col-md-3" style="background-color: #FFFFFF;">
+                        <h1></h1>
                         <img src="http://img10.360buyimg.com/n1/s450x450_jfs/t1/3405/18/3537/69901/5b997c0aE5dc8ed9f/a2c208410ae84d1f.jpg" width="100%" height="100%"/>
-                        <li></li>
+                        <h1></h1>
                     </div>
-                    <div class="col-md-9" style="background-color: #B18904; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
+                    <div class="col-md-9" style="background-color: #FFFFFF;">
                         <div class="row">
-                            <div class="col-md-8" style="background-color: #B18904; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
-                                <h3>商品{{item.id}}</h3>
-                                <li>价格 {{item.price}}</li>
-                                <li>数量 {{item.quantity}}</li>
-                                <li>类别 {{item.category}}</li>
+                            <div class="col-md-8" style="background-color: #FFFFFF;">
+                                <h3>商品{{item.name}}</h3>
+                                <h5>价格 {{item.price}}</h5>
+                                <h5>数量 {{item.quantity}}</h5>
+                                <h5>类别 {{item.category}}</h5>
                             </div>
-                            <div class="col-md-4" style="background-color: #B18904; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
+                            <div class="col-md-4" style="background-color: #FFFFFF;">
+                                <h1></h1>
                                 <button type="button" class="btn btn-primary" name="{{item.id}}" data-toggle="modal" data-target="#myModal{{item.id}}">查看详情</button>
                                 <div class="modal fade" id="myModal{{item.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
@@ -74,15 +76,19 @@
                                         </div><!-- /.modal-content -->
                                     </div><!-- /.modal -->
                                 </div>
-                                <button type="button" class="btn btn-success">购买/租赁</button>
+                                <h1></h1>
+                                <button type="button" class="btn btn-success">购买租赁</button>
+                                <h1></h1>
                                 <button type="button" class="btn btn-info" onclick="add_favourites({{item.id}})" >加入收藏</button>
+                                <h1></h1>
                             </div>
                         </div>
                     </div>
+                    <HR style="border:3 double #987cb9" width="100%" color=#987cb9 SIZE=3>
                 </div>
                 {% endfor %}
             </div>
-            <div class="col-md-2" style="background-color: #dedef8; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
+            <div class="col-md-2" style="background-color: #FFFFFF;">
             </div>
         </div>
     </div>
