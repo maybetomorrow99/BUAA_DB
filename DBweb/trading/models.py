@@ -7,7 +7,6 @@ class User(models.Model):
     """
     用户表
     """
-
     name = models.CharField(max_length=128)
     account = models.CharField(max_length=128, unique=True)
     password = models.CharField(max_length=256)
@@ -30,7 +29,6 @@ class Shop(models.Model):
     """
     商铺表
     """
-
     shop_owner = models.IntegerField()
 
 
@@ -56,15 +54,15 @@ class UserFavourites(models.Model):
     c_time = models.DateTimeField(auto_now_add=True)
 
 
-# class Order(models.Model):
-#     """
-#     订单表
-#     """
-#
-#     submit_time = DateTimeField(auto_now_add=True)
-#     shop_id = models.IntegerField()
-#     goods_id = models.IntegerField()
-#     status = models.IntegerField()  # 0 卖家未确认， 1 卖家确认，订单正在进行， 2 订单完成
+class Order(models.Model):
+    """
+    订单表
+    """
+    submit_time = models.DateTimeField(auto_now_add=True)
+    buyer_id = models.IntegerField()
+    goods_id = models.IntegerField()
+    status = models.IntegerField()  # 0 卖家未确认， 1 卖家确认，订单正在进行， 2 订单完成
+    type = models.IntegerField()    # 0购买， 1 租赁
 
 
 

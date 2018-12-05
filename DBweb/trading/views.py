@@ -131,20 +131,6 @@ def logout(request):
     # test git3
 
 
-def col(request):
-    """
-    my collection
-    :param request:
-    :return:
-    """
-    return render(request, 'col/col.html')
-
-
-def order(request):
-    view(request)
-    return render(request, 'order/order.html')
-
-
 @csrf_exempt
 def view(request):
     """
@@ -288,8 +274,37 @@ def goods_del(request):
         return render(request, 'shop/shop.html')
 
 
+def col(request):
+    """
+    my collection
+    :param request:
+    :return:
+    """
+    content = {}
+    user_id = request.session['user_id']
+    goods = models.Goods.objects.filter(user_id=user_id)
+    page_robot = Paginator(goods, 4)
+    page_num = request.GET.get("page")
+    try:
+        goods_list = page_robot.page(page_num)
+    except EmptyPage:
+        goods_list = page_robot.page(1)
+    except PageNotAnInteger:
+        goods_list = page_robot.page(1)
+    content["goods"] = goods
+    content["goods_list"] = goods_list
+    content["page_robot"] = page_robot
+    content["total_number"] = get_num_paginator(page_robot, goods_list.number, 7)
+    return render(request, 'col/col.html', content)
+
+
 @api_view(['GET', 'POST'])
-def add_favourites(request):
+def favourites_add(request):
+    """
+    add favourites
+    :param request:
+    :return:
+    """
     if request.method == 'POST':
         user_id = request.session['user_id']
         goods_id = request.data.get('data')
@@ -302,3 +317,41 @@ def add_favourites(request):
         new_favor = models.UserFavourites(user_id=user_id, goods_id=goods_id)
         new_favor.save()
     return render(request, 'view/view.html')
+
+
+@api_view(['GET', 'POST'])
+def favourites_del(request):
+    """
+    delete favourites
+    :param request:
+    :return:
+    """
+    if request.method == 'POST':
+        user_id = request.session['user_id']
+        goods_id = request.data.get('data')
+
+        favor_obj = models.Goods.UserFavourites.get(user_id=user_id, goods_id=goods_id)
+        favor_obj.delete()
+        return render(request, 'col/col.html')
+
+
+def order(request):
+    view(request)
+    return render(request, 'order/order.html')
+
+
+def order_submit(request):
+    """
+    submit order
+    :param request:
+    :return:
+    """
+    if request.method == 'POST':
+        buyer_id = request.session['user_id']
+        goods_id = request.data.get('data')
+        status = 0
+        type = 0
+
+        new_order = models.Order(buyer_id=buyer_id, goods_id=goods_id, status=status, type=type)
+        new_order.save()
+        return redirect('/order/')

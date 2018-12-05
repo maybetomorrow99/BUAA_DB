@@ -29,7 +29,7 @@ urlpatterns = [
     url(r'^shop/$', views.shop),
     url(r'^view/$', views.view),
     url(r'^view/get_detail/$', views.get_detail),
-    url(r'^view/add_favourites/$', views.add_favourites),
+    url(r'^view/add_favourites/$', views.favourites_add),
     url(r'^shop/register/$', views.goods_register),
     url(r'^shop/modify/$', views.goods_modify),
     url(r'^shop/goods_del/$', views.goods_del),
