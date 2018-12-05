@@ -25,10 +25,11 @@
 				'data':dataname
 			}),
 			success:function(response){
-				window.wxc.xcConfirm("成功", window.wxc.xcConfirm.typeEnum.success);
+//				window.wxc.xcConfirm("成功", window.wxc.xcConfirm.typeEnum.success);
+				window.location.href = "http://localhost:8000/shop/";
 			},
 	    	error:function(response){
-	    		window.wxc.xcConfirm("失败", window.wxc.xcConfirm.typeEnum.error);
+//	    		window.wxc.xcConfirm("失败", window.wxc.xcConfirm.typeEnum.error);
 	    	}
 		})
 	}

@@ -5,6 +5,8 @@ from .forms import UserForm, RegisterForm, GoodsRegisterForm
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import JsonResponse
+from django.core import serializers
 
 
 @api_view(['GET', 'POST'])
@@ -191,12 +193,13 @@ def get_num_paginator(page_robot, num, total):
 
 def shop(request):
     """
-
+    view my goods
     :param request:
     :return:
     """
     content = {}
-    goods = models.Goods.objects.all()
+    shop_id = models.Shop.objects.filter(shop_owner=request.session['user_id'])[0].id
+    goods = models.Goods.objects.filter(shop_id=shop_id)
     page_robot = Paginator(goods, 4)
     page_num = request.GET.get("page")
     try:
@@ -209,7 +212,7 @@ def shop(request):
     content["goods_list"] = goods_list
     content["page_robot"] = page_robot
     content["total_number"] = get_num_paginator(page_robot, goods_list.number, 7)
-    return render(request, 'shop/shop.html',content)
+    return render(request, 'shop/shop.html', content)
 
 
 def goods_register(request):
@@ -258,7 +261,7 @@ def goods_modify(request):
     try:
         goods_id = request.GET.get('id')
         goods_obj = models.Goods.objects.get(id=goods_id)
-        goods_register_form = GoodsRegisterForm(initial={'price': goods_obj.detail,
+        goods_register_form = GoodsRegisterForm(initial={'price': goods_obj.price,
                                                         'quantity': goods_obj.quantity,
                                                         'detail': goods_obj.detail,
                                                         'category': goods_obj.category})

@@ -1,8 +1,6 @@
 {% extends '../login/base.html' %}
 {% block title %}商品浏览{% endblock %}
 {% block content %}
-
-<script type="text/javascript" src="/static/js/jquery.cookie.js"></script>
 <script type="text/javascript">
         var csrftoken = $.cookie('csrftoken');
 
@@ -27,10 +25,10 @@
 				'data':dataname
 			}),
 			success:function(response){
-				window.wxc.xcConfirm("成功", window.wxc.xcConfirm.typeEnum.success);
+//				window.wxc.xcConfirm("成功", window.wxc.xcConfirm.typeEnum.success);
 			},
 	    	error:function(response){
-	    		window.wxc.xcConfirm("失败", window.wxc.xcConfirm.typeEnum.error);
+//	    		window.wxc.xcConfirm("失败", window.wxc.xcConfirm.typeEnum.error);
 	    	}
 		})
 		$('body').on('hidden.bs.modal', '.modal', function () {
