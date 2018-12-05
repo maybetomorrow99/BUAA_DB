@@ -226,6 +226,7 @@ def goods_register(request):
         goods_register_form = GoodsRegisterForm(request.POST)
         if goods_register_form.is_valid():  # 获取数据
             shop_id = models.Shop.objects.filter(shop_owner=request.session['user_id'])[0].id
+            name = goods_register_form.cleaned_data['name']
             price = goods_register_form.cleaned_data['price']
             quantity = goods_register_form.cleaned_data['quantity']
             detail = goods_register_form.cleaned_data['detail']
@@ -252,6 +253,7 @@ def goods_modify(request):
                 goods = models.Goods.objects.get(id=goods_id)
             except models.Goods.DoesNotExist:
                 return redirect('/col/')
+            goods.name = goods_register_form.cleaned_data['name']
             goods.price = goods_register_form.cleaned_data['price']
             goods.quantity = goods_register_form.cleaned_data['quantity']
             goods.detail = goods_register_form.cleaned_data['detail']
@@ -261,7 +263,8 @@ def goods_modify(request):
     try:
         goods_id = request.GET.get('id')
         goods_obj = models.Goods.objects.get(id=goods_id)
-        goods_register_form = GoodsRegisterForm(initial={'price': goods_obj.price,
+        goods_register_form = GoodsRegisterForm(initial={'name': goods_obj.name,
+                                                         'price': goods_obj.price,
                                                         'quantity': goods_obj.quantity,
                                                         'detail': goods_obj.detail,
                                                         'category': goods_obj.category})
