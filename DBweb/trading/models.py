@@ -38,7 +38,7 @@ class Goods(models.Model):
     """
     商品表
     """
-
+    name = models.CharField(max_length=256, default="")
     shop_id = models.IntegerField()
     price = models.FloatField()
     quantity = models.IntegerField()
