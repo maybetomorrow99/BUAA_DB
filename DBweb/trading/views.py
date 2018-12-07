@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import JsonResponse
 from django.core import serializers
-
+from django.core.exceptions import ObjectDoesNotExist
 
 @api_view(['GET', 'POST'])
 def get_detail(request):
@@ -217,7 +217,7 @@ def goods_register(request):
             quantity = goods_register_form.cleaned_data['quantity']
             detail = goods_register_form.cleaned_data['detail']
             category = goods_register_form.cleaned_data['category']
-            new_good = models.Goods(shop_id=shop_id, price=price, quantity=quantity, validity=True,
+            new_good = models.Goods(shop_id=shop_id, name=name,price=price, quantity=quantity, validity=True,
                                     detail=detail, category=category)
             new_good.save()
             return redirect('/shop/')
@@ -273,7 +273,6 @@ def goods_del(request):
         goods_obj.delete()
         return render(request, 'shop/shop.html')
 
-
 def col(request):
     """
     my collection
@@ -281,8 +280,11 @@ def col(request):
     :return:
     """
     content = {}
+    goods = models.Goods.objects.filter(shop_id=-1)
     user_id = request.session['user_id']
-    goods = models.Goods.objects.filter(user_id=user_id)
+    goods_set = models.UserFavourites.objects.filter(user_id=user_id)
+    for item in goods_set:
+        goods = goods | models.Goods.objects.filter(id=item.goods_id)
     page_robot = Paginator(goods, 4)
     page_num = request.GET.get("page")
     try:
@@ -313,7 +315,6 @@ def favourites_add(request):
         if same_favourites:
             print("不能重复添加")
             return render(request, 'view/view.html')
-        print(user_id, goods_id)
         new_favor = models.UserFavourites(user_id=user_id, goods_id=goods_id)
         new_favor.save()
     return render(request, 'view/view.html')
@@ -330,7 +331,7 @@ def favourites_del(request):
         user_id = request.session['user_id']
         goods_id = request.data.get('data')
 
-        favor_obj = models.Goods.UserFavourites.get(user_id=user_id, goods_id=goods_id)
+        favor_obj = models.UserFavourites.objects.get(user_id=user_id, goods_id=goods_id)
         favor_obj.delete()
         return render(request, 'col/col.html')
 

@@ -1,8 +1,144 @@
 {% extends '../login/base.html' %}
 {% block title %}我的收藏{% endblock %}
 {% block content %}
+<script type="text/javascript" src="/static/js/jquery.cookie.js"></script>
+<script type="text/javascript">
+        var csrftoken = $.cookie('csrftoken');
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+        $.ajaxSetup({  //设置ajax发送之前做的操作，在data里面加上一个键值对
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+        function favourites_del(dataname){
+//		alert(dataname);
+		$.ajax({
+			url:"/col/favourites_del/",
+			type:"POST",
+			contentType: "application/json",
+			data:JSON.stringify({
+				'data':dataname
+			}),
+			success:function(response){
+//				window.wxc.xcConfirm("成功", window.wxc.xcConfirm.typeEnum.success);
+				window.location.href = "http://localhost:8000/col/";
+			},
+	    	error:function(response){
+//	    		window.wxc.xcConfirm("失败", window.wxc.xcConfirm.typeEnum.error);
+	    	}
+		})
+	}
+</script>
     {% if request.session.is_login %}
-    <h1>你好,{{ request.session.user_name }}！欢迎回来！</h1>
+    {% if goods_list %}
+        <div class="container">
+            <div class="row" >
+                <div class="col-md-2" style="background-color: #FFFFFF;">
+                </div>
+                <div class="col-md-8" style="background-color: #FFFFFF;">
+                    {% for item in goods_list %}
+                    <div class="row">
+                        <div class="col-md-3" style="background-color: #FFFFFF;">
+                            <img src="http://img10.360buyimg.com/n1/s450x450_jfs/t1/3405/18/3537/69901/5b997c0aE5dc8ed9f/a2c208410ae84d1f.jpg" width="100%" height="100%"/>
+                        </div>
+                        <div class="col-md-9" style="background-color: #FFFFFF;">
+                            <div class="row">
+                                <div class="col-md-8" style="background-color: #FFFFFF;">
+                                    <h3>商品{{item.name}}</h3>
+                                    <h5>价格 {{item.price}}</h5>
+                                    <h5>数量 {{item.quantity}}</h5>
+                                    <h5>类别 {{item.category}}</h5>
+                                </div>
+                                <div class="col-md-4" style="background-color: #FFFFFF;">
+                                    <h1></h1>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal{{item.id}}">查看详情</button>
+                                    <div class="modal fade" id="myModal{{item.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                    <h4 class="modal-title" id="myModalLabel">商品详情</h4>
+                                                </div>
+                                                <div class="modal-body">{{item.detail}}</div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                                </div>
+                                            </div><!-- /.modal-content -->
+                                        </div><!-- /.modal -->
+                                    </div>
+                                    <h1></h1>
+                                    <button type="button" class="btn btn-success">购买租赁</button>
+                                    <h1></h1>
+                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModalCol{{item.id}}">移出收藏</button>
+                                    <h1></h1>
+                                    <div class="modal fade" id="myModalCol{{item.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabelCol" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                    <h4 class="modal-title" id="myModalLabelCol">WARNING!!</h4>
+                                                </div>
+                                                <div class="modal-body">是否确定要移出该商品？</div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="favourites_del({{item.id}})">确定</button>
+                                                </div>
+                                            </div><!-- /.modal-content -->
+                                        </div><!-- /.modal -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <HR style="border:3 double #987cb9" width="100%" color=#987cb9 SIZE=3>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="col-md-2" style="background-color: #dedef8; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <ul class="pagination" style="margin-left: 50%;transform:translate(-50%,0)">
+                {% if goods_list.number == 1 %}
+                    <li class="disabled"><a href="#">&laquo;</a></li>
+                {% else %}
+                    <li><a href="/col/?page={{goods_list.number|add:-1}}">&laquo;</a></li>
+                {% endif %}
+                {% for i in total_number %}
+                    {% if i == goods_list.number %}
+                        <li class="active"><a href="/col/?page={{i}}">{{i}}</a></li>
+                    {% else %}
+                        <li><a href="/col/?page={{i}}">{{i}}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if goods_list.number == page_robot.num_pages %}
+                    <li class="disabled"><a href="#">&raquo;</a></li>
+                {% else %}
+                    <li><a href="/col/?page={{goods_list.number|add:1}}">&raquo;</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    {% else %}
+        <div class="container">
+            <div class="row" >
+                <div class="col-md-2" style="background-color: #dedef8; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
+                </div>
+                <div class="col-md-8" style="background-color: #dedef8; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
+                    <h1>
+                        <span class="label label-primary">你好,{{ request.session.user_name }}！欢迎回来！</span>
+                    </h1>
+                    <h1><span class="label label-primary">你的收藏中暂无商品</span></h1>
+                </div>
+                <div class="col-md-2" style="background-color: #dedef8; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
+                </div>
+            </div>
+        </div>
+    {% endif %}
     {% else %}
     <img src="../../static/pic/login-warning.jpg" width="100%"/>
     {% endif %}
