@@ -61,8 +61,9 @@ class Order(models.Model):
     submit_time = models.DateTimeField(auto_now_add=True)
     buyer_id = models.IntegerField()
     goods_id = models.IntegerField()
-    status = models.IntegerField()  # 0 卖家未确认， 1 卖家确认，订单正在进行， 2 订单完成
-    type = models.IntegerField()    # 0购买， 1 租赁
 
+    # 0 订单被取消 1 卖家未确认，待支付 2 买家确认，已支付 3 卖家确认，订单正在进行， 4 订单完成
+    status = models.IntegerField()
+    type = models.IntegerField()    # 0购买， 1 租赁
 
 

@@ -356,3 +356,30 @@ def order_submit(request):
         new_order = models.Order(buyer_id=buyer_id, goods_id=goods_id, status=status, type=type)
         new_order.save()
         return redirect('/order/')
+
+
+def order_pay(request):
+    """
+    order pay
+    :param request:
+    :return:
+    """
+    if request.method == 'POST':
+        buyer_id = request.session['user_id']
+        goods_id = request.data.get('data')
+        status = 0
+        type = 0
+
+        new_order = models.Order(buyer_id=buyer_id, goods_id=goods_id, status=status, type=type)
+        new_order.save()
+        return redirect('/order/')
+
+
+def order_seller_confirm(request):
+
+    return redirect('/order/')
+
+
+def order_buyer_confirm(request):
+
+    return redirect('/order/')
