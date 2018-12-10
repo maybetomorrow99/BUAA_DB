@@ -341,6 +341,7 @@ def order(request):
     return render(request, 'order/order.html')
 
 
+@api_view(['GET', 'POST'])
 def order_submit(request):
     """
     submit order
@@ -352,10 +353,9 @@ def order_submit(request):
         goods_id = request.data.get('data')
         status = 0
         type = 0
-
         new_order = models.Order(buyer_id=buyer_id, goods_id=goods_id, status=status, type=type)
         new_order.save()
-        return redirect('/order/')
+    return render(request, 'order/order.html')
 
 
 def order_pay(request):

@@ -1,20 +1,7 @@
 {% extends '../login/base.html' %}
 {% block title %}我的店铺{% endblock %}
 {% block content %}
-<script type="text/javascript" src="/static/js/jquery.cookie.js"></script>
 <script type="text/javascript">
-        var csrftoken = $.cookie('csrftoken');
-        function csrfSafeMethod(method) {
-            // these HTTP methods do not require CSRF protection
-            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-        }
-        $.ajaxSetup({  //设置ajax发送之前做的操作，在data里面加上一个键值对
-            beforeSend: function(xhr, settings) {
-                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                }
-            }
-        });
         function goods_del(dataname){
 //		alert(dataname);
 		$.ajax({
@@ -102,7 +89,7 @@
                     </div>
                     {% endfor %}
                 </div>
-                <div class="col-md-2" style="background-color: #dedef8; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
+                <div class="col-md-2" style="background-color: #FFFFFF;">
                 </div>
             </div>
         </div>

@@ -34,4 +34,5 @@ urlpatterns = [
     url(r'^shop/modify/$', views.goods_modify),
     url(r'^shop/goods_del/$', views.goods_del),
     url(r'^col/favourites_del/$',views.favourites_del),
+    url(r'^view/order_submit/$',views.order_submit),
 ]

@@ -1,20 +1,7 @@
 {% extends '../login/base.html' %}
 {% block title %}我的收藏{% endblock %}
 {% block content %}
-<script type="text/javascript" src="/static/js/jquery.cookie.js"></script>
 <script type="text/javascript">
-        var csrftoken = $.cookie('csrftoken');
-        function csrfSafeMethod(method) {
-            // these HTTP methods do not require CSRF protection
-            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-        }
-        $.ajaxSetup({  //设置ajax发送之前做的操作，在data里面加上一个键值对
-            beforeSend: function(xhr, settings) {
-                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                }
-            }
-        });
         function favourites_del(dataname){
 //		alert(dataname);
 		$.ajax({
@@ -98,7 +85,7 @@
                     </div>
                     {% endfor %}
                 </div>
-                <div class="col-md-2" style="background-color: #dedef8; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
+                <div class="col-md-2" style="background-color: #FFFFFF;">
                 </div>
             </div>
         </div>
@@ -126,15 +113,15 @@
     {% else %}
         <div class="container">
             <div class="row" >
-                <div class="col-md-2" style="background-color: #dedef8; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
+                <div class="col-md-2" style="background-color: #FFFFFF;">
                 </div>
-                <div class="col-md-8" style="background-color: #dedef8; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
+                <div class="col-md-8" style="background-color: #FFFFFF;">
                     <h1>
                         <span class="label label-primary">你好,{{ request.session.user_name }}！欢迎回来！</span>
                     </h1>
                     <h1><span class="label label-primary">你的收藏中暂无商品</span></h1>
                 </div>
-                <div class="col-md-2" style="background-color: #dedef8; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
+                <div class="col-md-2" style="background-color: #FFFFFF;">
                 </div>
             </div>
         </div>

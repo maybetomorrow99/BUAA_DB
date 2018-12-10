@@ -2,40 +2,34 @@
 {% block title %}商品浏览{% endblock %}
 {% block content %}
 <script type="text/javascript">
-        var csrftoken = $.cookie('csrftoken');
-
-        function csrfSafeMethod(method) {
-            // these HTTP methods do not require CSRF protection
-            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-        }
-        $.ajaxSetup({  //设置ajax发送之前做的操作，在data里面加上一个键值对
-            beforeSend: function(xhr, settings) {
-                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                }
-            }
-        });
         function add_favourites(dataname){
-		alert("添加成功");
-		$.ajax({
-			url:"/view/add_favourites/",
-			type:"POST",
-			contentType: "application/json",
-			data:JSON.stringify({
-				'data':dataname
-			}),
-			success:function(response){
-//				window.wxc.xcConfirm("成功", window.wxc.xcConfirm.typeEnum.success);
-
-			},
-	    	error:function(response){
-//	    		window.wxc.xcConfirm("失败", window.wxc.xcConfirm.typeEnum.error);
-	    	}
-		})
-		$('body').on('hidden.bs.modal', '.modal', function () {
-            $(this).removeData('bs.modal');
-        });
-	}
+            alert("添加成功");
+            $.ajax({
+                url:"/view/add_favourites/",
+                type:"POST",
+                contentType: "application/json",
+                data:JSON.stringify({
+                    'data':dataname
+                }),
+            })
+            $('body').on('hidden.bs.modal', '.modal', function () {
+                $(this).removeData('bs.modal');
+            });
+        }
+        function order_submit(dataname){
+            alert("已加入订单!");
+            $.ajax({
+                url:"/view/order_submit/",
+                type:"POST",
+                contentType: "application/json",
+                data:JSON.stringify({
+                    'data':dataname
+                }),
+            })
+            $('body').on('hidden.bs.modal', '.modal', function () {
+                $(this).removeData('bs.modal');
+            });
+        }
 </script>
     {% if request.session.is_login %}
     {% if goods_list %}
@@ -77,7 +71,7 @@
                                     </div><!-- /.modal -->
                                 </div>
                                 <h1></h1>
-                                <button type="button" class="btn btn-success">购买租赁</button>
+                                <button type="button" class="btn btn-success" onclick="order_submit({{item.id}})">购买租赁</button>
                                 <h1></h1>
                                 <button type="button" class="btn btn-info" onclick="add_favourites({{item.id}})" >加入收藏</button>
                                 <h1></h1>
