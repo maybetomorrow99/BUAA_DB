@@ -9,6 +9,7 @@ from django.http import JsonResponse
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
 
+
 @api_view(['GET', 'POST'])
 def get_detail(request):
     if request.method == 'POST':
@@ -68,7 +69,6 @@ def register(request):
     :param request:
     :return:
     """
-
     if request.session.get('is_login', None):
         # 登录状态不允许注册。你可以修改这条原则！
         return redirect("/index/")
@@ -138,7 +138,6 @@ def view(request):
     :param request:
     :return:
     """
-
     content = {}
     goods = models.Goods.objects.all()
     page_robot = Paginator(goods, 4)
@@ -273,6 +272,7 @@ def goods_del(request):
         goods_obj.delete()
         return render(request, 'shop/shop.html')
 
+
 def col(request):
     """
     my collection
@@ -337,7 +337,6 @@ def favourites_del(request):
 
 
 def order(request):
-    view(request)
     return render(request, 'order/order.html')
 
 
@@ -351,7 +350,7 @@ def order_submit(request):
     if request.method == 'POST':
         buyer_id = request.session['user_id']
         goods_id = request.data.get('data')
-        status = 0
+        status = 1
         type = 0
         new_order = models.Order(buyer_id=buyer_id, goods_id=goods_id, status=status, type=type)
         new_order.save()
@@ -365,30 +364,88 @@ def order_pay(request):
     :return:
     """
     if request.method == 'POST':
-        buyer_id = request.session['user_id']
-        goods_id = request.data.get('data')
-        status = 0
-        type = 0
-
-        new_order = models.Order(buyer_id=buyer_id, goods_id=goods_id, status=status, type=type)
-        new_order.save()
+        order_id = request.data.get('data')
+        models.Order.objects.filter(id=order_id).update(status=2)
         return redirect('/order/')
+    return redirect('/order/')
 
 
 def order_seller_confirm(request):
-
+    """
+    seller confirm order, ready for shipment
+    :param request:
+    :return:
+    """
+    if request.method == 'POST':
+        order_id = request.data.get('data')
+        models.Order.objects.filter(id=order_id).update(status=3)
     return redirect('/order/')
 
 
 def order_buyer_confirm(request):
-
+    """
+    confirm receipt of goods
+    :param request:
+    :return:
+    """
+    if request.method == 'POST':
+        order_id = request.data.get('data')
+        models.Order.objects.filter(id=order_id).update(status=4)
     return redirect('/order/')
+
+
+def order_cancel(request):
+    if request.method == 'POST':
+        order_id = request.data.get('data')
+        models.Order.objects.filter(id=order_id).update(status=0)
+    return redirect('/order/')
+
+
+def order_view(request):
+    """
+    view order
+    :param request:
+    :return:
+    """
+    # if request.method == 'POST':
+    #     order_status = request.data.get('data')
+    # 此处有问题，不知道怎么获取当前点击的是哪个按钮，要么就分成四个函数写
+    order_status = 0
+    buyer_id = request.session['user_id']
+    order_list = models.Order.objects.filter(buyer_id=buyer_id, status=order_status)
+    # print(order_list)
+    # 此处存在问题
+    goods_list = []
+    for item in order_list:
+        goods_list.append({'goods': models.Goods.objects.get(id=item.goods_id),
+                           'order': item})
+    # print(goods_list)
+    return render(request, 'order/order.html', locals())
+
+
+# 这个函数没有写好，先留出框架
+def comment(request):
+    if request.method == "POST":
+        register_form = CommentForm(request.POST)
+        message = "请检查填写的内容！"
+        if register_form.is_valid():  # 获取数据
+            goods_id = 1
+            detail = comment_form.cleaned_data['detail']
+            satisfaction = comment_form.cleaned_data['satisfaction']
+
+            new_comment = models.Comment(goods_id=goods_id, detail=detail, satisfaction=satisfaction)
+            # new_comment.save()
+            return redirect('/order/')
+    register_form = CommentForm()
+    return render(request, 'order/order.html', locals())
+
 
 def uploadImg(request): # 图片上传函数
     if request.method == 'POST':
         img = models.Img(img_url=request.FILES.get('img'))
         img.save()
     return render(request, 'login/imgupload.html')
+
 
 def showImg(request):
     imgs = models.Img.objects.all() # 从数据库中取出所有的图片路径

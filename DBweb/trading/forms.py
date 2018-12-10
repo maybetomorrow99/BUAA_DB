@@ -23,3 +23,8 @@ class GoodsRegisterForm(forms.Form):
     quantity = forms.IntegerField(label="数量",widget=forms.TextInput(attrs={'class': 'form-control'}))
     detail = forms.CharField(label="描述",max_length=256,widget=forms.TextInput(attrs={'class': 'form-control'}))
     category = forms.CharField(label="类别",max_length=256,widget=forms.TextInput(attrs={'class': 'form-control'}))
+
+
+class CommentForm(forms.Form):
+    detail = forms.CharField(label="内容", max_length=256, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    satisfaction = forms.IntegerField(label="满意度",widget=forms.TextInput(attrs={'class': 'form-control'}))

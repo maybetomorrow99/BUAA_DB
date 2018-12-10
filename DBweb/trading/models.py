@@ -69,3 +69,14 @@ class Order(models.Model):
 
 class Img(models.Model):
     img_url = models.ImageField(upload_to='img')
+
+
+class Comment(models.Model):
+    goods_id = models.ForeignKey(
+        'Goods',
+        on_delete=models.CASCADE,
+    )
+    detail = models.CharField(max_length=256)
+    satisfaction = models.IntegerField()
+    comment_time = models.DateTimeField(auto_now_add=True)
+

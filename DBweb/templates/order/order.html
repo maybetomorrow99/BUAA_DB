@@ -19,9 +19,14 @@
                             </div>
                             <div id="collapseOne" class="panel-collapse collapse in">
                                 <div class="panel-body">
-                                    Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred
-                                    nesciunt sapiente ea proident. Ad vegan excepteur butcher vice
-                                    lomo.
+                                    <!--test-->
+                                    <h>test1</h>
+                                    {% for item in goods_list %}
+                                        <h>{{item.order.submit_time}}</h>
+                                        <h>{{item.goods.detail}}</h>
+                                        <h>test</h>
+                                    {% endfor %}
+                                    <!--test-->
                                 </div>
                             </div>
                         </div>
