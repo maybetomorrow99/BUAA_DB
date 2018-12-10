@@ -2,7 +2,94 @@
 {% block title %}订单查询{% endblock %}
 {% block content %}
     {% if request.session.is_login %}
-    <h1>你好,{{ request.session.user_name }}！欢迎回来！</h1>
+        <div class="container">
+            <div class="row" >
+                <div class="col-md-2" style="background-color: #FFFFFF;">
+                </div>
+                <div class="col-md-8" style="background-color: #FFFFFF;">
+                    <div class="panel-group" id="accordion">
+                        <div class="panel panel-warning">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion"
+                                    href="#collapseOne">
+                                    待支付订单
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred
+                                    nesciunt sapiente ea proident. Ad vegan excepteur butcher vice
+                                    lomo.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion"
+                                    href="#collapseTwo">
+                                    待发货订单
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseTwo" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred
+                                    nesciunt sapiente ea proident. Ad vegan excepteur butcher vice
+                                    lomo.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion"
+                                    href="#collapseThree">
+                                    已完成订单
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseThree" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred
+                                    nesciunt sapiente ea proident. Ad vegan excepteur butcher vice
+                                    lomo.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion"
+                                    href="#collapseFour">
+                                    已取消订单
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseFour" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred
+                                    nesciunt sapiente ea proident. Ad vegan excepteur butcher vice
+                                    lomo.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2" style="background-color: #FFFFFF;">
+                </div>
+            </div>
+        </div>
+    <script>
+    $(function () { $('#collapseFour').collapse({
+            toggle: false
+        })});
+        $(function () { $('#collapseTwo').collapse('show')});
+        $(function () { $('#collapseThree').collapse('toggle')});
+        $(function () { $('#collapseOne').collapse('hide')});
+    </script>
     {% else %}
     <img src="../../static/pic/login-warning.jpg" width="100%"/>
     {% endif %}
