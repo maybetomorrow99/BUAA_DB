@@ -62,7 +62,7 @@ class Order(models.Model):
     buyer_id = models.IntegerField()
     goods_id = models.IntegerField()
 
-    # 0 订单被取消 1 卖家未确认，待支付 2 买家确认，已支付 3 卖家确认，订单正在进行， 4 订单完成
+    # 0 订单被取消 1 卖家未确认，待支付 2 买家确认，已支付,等待收货 3 订单完成
     status = models.IntegerField()
     type = models.IntegerField()    # 0购买， 1 租赁
 

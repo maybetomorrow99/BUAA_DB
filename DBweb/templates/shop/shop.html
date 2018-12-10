@@ -3,23 +3,20 @@
 {% block content %}
 <script type="text/javascript">
         function goods_del(dataname){
-//		alert(dataname);
-		$.ajax({
-			url:"/shop/goods_del/",
-			type:"POST",
-			contentType: "application/json",
-			data:JSON.stringify({
-				'data':dataname
-			}),
-			success:function(response){
-//				window.wxc.xcConfirm("成功", window.wxc.xcConfirm.typeEnum.success);
-				window.location.href = "http://localhost:8000/shop/";
-			},
-	    	error:function(response){
-//	    		window.wxc.xcConfirm("失败", window.wxc.xcConfirm.typeEnum.error);
-	    	}
-		})
-	}
+            $.ajax({
+                url:"/shop/goods_del/",
+                type:"POST",
+                contentType: "application/json",
+                data:JSON.stringify({
+                    'data':dataname
+                }),
+                success:function(response){
+                    window.location.href = "http://localhost:8000/shop/";
+                },
+                error:function(response){
+                }
+            })
+        }
 </script>
     {% if request.session.is_login %}
     {% if goods_list %}
@@ -35,7 +32,9 @@
                     {% for item in goods_list %}
                     <div class="row">
                         <div class="col-md-3" style="background-color: #FFFFFF;">
+                            <h1></h1>
                             <img src="http://img10.360buyimg.com/n1/s450x450_jfs/t1/3405/18/3537/69901/5b997c0aE5dc8ed9f/a2c208410ae84d1f.jpg" width="100%" height="100%"/>
+                            <h1></h1>
                         </div>
                         <div class="col-md-9" style="background-color: #FFFFFF;">
                             <div class="row">

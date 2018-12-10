@@ -356,7 +356,7 @@ def order_submit(request):
         new_order.save()
     return render(request, 'order/order.html')
 
-
+@api_view(['GET', 'POST'])
 def order_pay(request):
     """
     order pay
@@ -369,7 +369,7 @@ def order_pay(request):
         return redirect('/order/')
     return redirect('/order/')
 
-
+@api_view(['GET', 'POST'])
 def order_seller_confirm(request):
     """
     seller confirm order, ready for shipment
@@ -381,7 +381,7 @@ def order_seller_confirm(request):
         models.Order.objects.filter(id=order_id).update(status=3)
     return redirect('/order/')
 
-
+@api_view(['GET', 'POST'])
 def order_buyer_confirm(request):
     """
     confirm receipt of goods
@@ -390,10 +390,10 @@ def order_buyer_confirm(request):
     """
     if request.method == 'POST':
         order_id = request.data.get('data')
-        models.Order.objects.filter(id=order_id).update(status=4)
+        models.Order.objects.filter(id=order_id).update(status=3)
     return redirect('/order/')
 
-
+@api_view(['GET', 'POST'])
 def order_cancel(request):
     if request.method == 'POST':
         order_id = request.data.get('data')
@@ -407,20 +407,30 @@ def order_view(request):
     :param request:
     :return:
     """
-    # if request.method == 'POST':
-    #     order_status = request.data.get('data')
-    # 此处有问题，不知道怎么获取当前点击的是哪个按钮，要么就分成四个函数写
-    order_status = 0
     buyer_id = request.session['user_id']
+    goods_list0 = order_get_by_status(0, buyer_id)
+    g0=goods_list0.__len__()
+    goods_list1 = order_get_by_status(1, buyer_id)
+    g1 = goods_list1.__len__()
+    goods_list2 = order_get_by_status(2, buyer_id)
+    g2 = goods_list2.__len__()
+    goods_list3 = order_get_by_status(3, buyer_id)
+    g3 = goods_list3.__len__()
+
+    return render(request, 'order/order.html', locals())
+
+
+def order_get_by_status(order_status, buyer_id):
     order_list = models.Order.objects.filter(buyer_id=buyer_id, status=order_status)
-    # print(order_list)
-    # 此处存在问题
     goods_list = []
     for item in order_list:
-        goods_list.append({'goods': models.Goods.objects.get(id=item.goods_id),
-                           'order': item})
-    # print(goods_list)
-    return render(request, 'order/order.html', locals())
+        try:
+            goods = models.Goods.objects.get(id=item.goods_id)
+            goods_list.append({'goods': goods,
+                               'order': item})
+        except models.Goods.DoesNotExist:
+            print("Error")
+    return goods_list
 
 
 # 这个函数没有写好，先留出框架

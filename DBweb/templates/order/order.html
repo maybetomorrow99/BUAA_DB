@@ -13,20 +13,39 @@
                                 <h4 class="panel-title">
                                     <a data-toggle="collapse" data-parent="#accordion"
                                     href="#collapseOne">
-                                    待支付订单
+                                    待支付订单  <span class="badge">{{g1}}</span>
                                     </a>
                                 </h4>
                             </div>
                             <div id="collapseOne" class="panel-collapse collapse in">
                                 <div class="panel-body">
-                                    <!--test-->
-                                    <h>test1</h>
-                                    {% for item in goods_list %}
-                                        <h>{{item.order.submit_time}}</h>
-                                        <h>{{item.goods.detail}}</h>
-                                        <h>test</h>
+                                    {% for item in goods_list1 %}
+                                    <div class="row">
+                                        <div class="col-md-3" style="background-color: #FFFFFF;">
+                                            <h1></h1>
+                                            <img src="http://img10.360buyimg.com/n1/s450x450_jfs/t1/3405/18/3537/69901/5b997c0aE5dc8ed9f/a2c208410ae84d1f.jpg" width="100%" height="100%"/>
+                                            <h1></h1>
+                                        </div>
+                                        <div class="col-md-9" style="background-color: #FFFFFF;">
+                                            <div class="row">
+                                                <div class="col-md-8" style="background-color: #FFFFFF;">
+                                                    <h3>商品{{item.goods.name}}</h3>
+                                                    <h5>价格 {{item.goods.price}}</h5>
+                                                    <h5>数量 {{item.goods.quantity}}</h5>
+                                                    <h5>类别 {{item.goods.category}}</h5>
+                                                </div>
+                                                <div class="col-md-4" style="background-color: #FFFFFF;">
+                                                    <h1></h1>
+                                                    <button type="button" class="btn btn-success" onclick="order_pay({{item.order.id}})">微信支付</button>
+                                                    <h1></h1>
+                                                    <button type="button" class="btn btn-danger" onclick="order_cancel({{item.order.id}})">取消订单</button>
+                                                    <h1></h1>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <HR style="border:3 double #987cb9" width="100%" color=#987cb9 SIZE=3>
+                                    </div>
                                     {% endfor %}
-                                    <!--test-->
                                 </div>
                             </div>
                         </div>
@@ -35,15 +54,37 @@
                                 <h4 class="panel-title">
                                     <a data-toggle="collapse" data-parent="#accordion"
                                     href="#collapseTwo">
-                                    待发货订单
+                                    待发货订单  <span class="badge">{{g2}}</span>
                                     </a>
                                 </h4>
                             </div>
                             <div id="collapseTwo" class="panel-collapse collapse">
                                 <div class="panel-body">
-                                    Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred
-                                    nesciunt sapiente ea proident. Ad vegan excepteur butcher vice
-                                    lomo.
+                                    {% for item in goods_list2 %}
+                                    <div class="row">
+                                        <div class="col-md-3" style="background-color: #FFFFFF;">
+                                            <h1></h1>
+                                            <img src="http://img10.360buyimg.com/n1/s450x450_jfs/t1/3405/18/3537/69901/5b997c0aE5dc8ed9f/a2c208410ae84d1f.jpg" width="100%" height="100%"/>
+                                            <h1></h1>
+                                        </div>
+                                        <div class="col-md-9" style="background-color: #FFFFFF;">
+                                            <div class="row">
+                                                <div class="col-md-8" style="background-color: #FFFFFF;">
+                                                    <h3>商品{{item.goods.name}}</h3>
+                                                    <h5>价格 {{item.goods.price}}</h5>
+                                                    <h5>数量 {{item.goods.quantity}}</h5>
+                                                    <h5>类别 {{item.goods.category}}</h5>
+                                                </div>
+                                                <div class="col-md-4" style="background-color: #FFFFFF;">
+                                                    <h1></h1>
+                                                    <button type="button" class="btn btn-success" onclick="order_buyer_confirm({{item.order.id}})">确认收货</button>
+                                                    <h1></h1>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <HR style="border:3 double #987cb9" width="100%" color=#987cb9 SIZE=3>
+                                    </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
@@ -52,15 +93,37 @@
                                 <h4 class="panel-title">
                                     <a data-toggle="collapse" data-parent="#accordion"
                                     href="#collapseThree">
-                                    已完成订单
+                                    已完成订单  <span class="badge">{{g3}}</span>
                                     </a>
                                 </h4>
                             </div>
                             <div id="collapseThree" class="panel-collapse collapse">
                                 <div class="panel-body">
-                                    Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred
-                                    nesciunt sapiente ea proident. Ad vegan excepteur butcher vice
-                                    lomo.
+                                    {% for item in goods_list3 %}
+                                    <div class="row">
+                                        <div class="col-md-3" style="background-color: #FFFFFF;">
+                                            <h1></h1>
+                                            <img src="http://img10.360buyimg.com/n1/s450x450_jfs/t1/3405/18/3537/69901/5b997c0aE5dc8ed9f/a2c208410ae84d1f.jpg" width="100%" height="100%"/>
+                                            <h1></h1>
+                                        </div>
+                                        <div class="col-md-9" style="background-color: #FFFFFF;">
+                                            <div class="row">
+                                                <div class="col-md-8" style="background-color: #FFFFFF;">
+                                                    <h3>商品{{item.goods.name}}</h3>
+                                                    <h5>价格 {{item.goods.price}}</h5>
+                                                    <h5>数量 {{item.goods.quantity}}</h5>
+                                                    <h5>类别 {{item.goods.category}}</h5>
+                                                </div>
+                                                <div class="col-md-4" style="background-color: #FFFFFF;">
+                                                    <h1></h1>
+                                                    <button type="button" class="btn btn-success" onclick="order_buyer_confirm({{item.order.id}})">发表评价</button>
+                                                    <h1></h1>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <HR style="border:3 double #987cb9" width="100%" color=#987cb9 SIZE=3>
+                                    </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
@@ -69,15 +132,37 @@
                                 <h4 class="panel-title">
                                     <a data-toggle="collapse" data-parent="#accordion"
                                     href="#collapseFour">
-                                    已取消订单
+                                    已取消订单  <span class="badge">{{g0}}</span>
                                     </a>
                                 </h4>
                             </div>
                             <div id="collapseFour" class="panel-collapse collapse">
                                 <div class="panel-body">
-                                    Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred
-                                    nesciunt sapiente ea proident. Ad vegan excepteur butcher vice
-                                    lomo.
+                                    {% for item in goods_list0 %}
+                                    <div class="row">
+                                        <div class="col-md-3" style="background-color: #FFFFFF;">
+                                            <h1></h1>
+                                            <img src="http://img10.360buyimg.com/n1/s450x450_jfs/t1/3405/18/3537/69901/5b997c0aE5dc8ed9f/a2c208410ae84d1f.jpg" width="100%" height="100%"/>
+                                            <h1></h1>
+                                        </div>
+                                        <div class="col-md-9" style="background-color: #FFFFFF;">
+                                            <div class="row">
+                                                <div class="col-md-8" style="background-color: #FFFFFF;">
+                                                    <h3>商品{{item.goods.name}}</h3>
+                                                    <h5>价格 {{item.goods.price}}</h5>
+                                                    <h5>数量 {{item.goods.quantity}}</h5>
+                                                    <h5>类别 {{item.goods.category}}</h5>
+                                                </div>
+                                                <div class="col-md-4" style="background-color: #FFFFFF;">
+                                                    <h1></h1>
+
+                                                    <h1></h1>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <HR style="border:3 double #987cb9" width="100%" color=#987cb9 SIZE=3>
+                                    </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
@@ -94,6 +179,52 @@
         $(function () { $('#collapseTwo').collapse('show')});
         $(function () { $('#collapseThree').collapse('toggle')});
         $(function () { $('#collapseOne').collapse('hide')});
+
+    function order_pay(dataname){
+            $.ajax({
+                url:"/order/order_pay/",
+                type:"POST",
+                contentType: "application/json",
+                data:JSON.stringify({
+                    'data':dataname
+                }),
+                success:function(response){
+                    window.location.href = "http://localhost:8000/order/";
+                },
+                error:function(response){
+                }
+            })
+    }
+    function order_cancel(dataname){
+            $.ajax({
+                url:"/order/order_cancel/",
+                type:"POST",
+                contentType: "application/json",
+                data:JSON.stringify({
+                    'data':dataname
+                }),
+                success:function(response){
+                    window.location.href = "http://localhost:8000/order/";
+                },
+                error:function(response){
+                }
+            })
+    }
+    function order_buyer_confirm(dataname){
+            $.ajax({
+                url:"/order/order_buyer_confirm/",
+                type:"POST",
+                contentType: "application/json",
+                data:JSON.stringify({
+                    'data':dataname
+                }),
+                success:function(response){
+                    window.location.href = "http://localhost:8000/order/";
+                },
+                error:function(response){
+                }
+            })
+    }
     </script>
     {% else %}
     <img src="../../static/pic/login-warning.jpg" width="100%"/>
