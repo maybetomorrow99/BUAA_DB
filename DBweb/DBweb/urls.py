@@ -16,8 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url
+from django.conf.urls.static import static
 from trading import views
-
+from . import settings
 urlpatterns = [
     url(r'^admin/$', admin.site.urls),
     url(r'^index/$', views.index),
@@ -35,4 +36,7 @@ urlpatterns = [
     url(r'^shop/goods_del/$', views.goods_del),
     url(r'^col/favourites_del/$',views.favourites_del),
     url(r'^view/order_submit/$',views.order_submit),
-]
+    url(r'uploadImg/', views.uploadImg),
+    url(r'showImg/', views.showImg),
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

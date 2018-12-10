@@ -383,3 +383,16 @@ def order_seller_confirm(request):
 def order_buyer_confirm(request):
 
     return redirect('/order/')
+
+def uploadImg(request): # 图片上传函数
+    if request.method == 'POST':
+        img = models.Img(img_url=request.FILES.get('img'))
+        img.save()
+    return render(request, 'login/imgupload.html')
+
+def showImg(request):
+    imgs = models.Img.objects.all() # 从数据库中取出所有的图片路径
+    context = {
+        'imgs' : imgs
+    }
+    return render(request, 'login/showImg.html', context)

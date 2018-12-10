@@ -67,3 +67,5 @@ class Order(models.Model):
     type = models.IntegerField()    # 0购买， 1 租赁
 
 
+class Img(models.Model):
+    img_url = models.ImageField(upload_to='img')
