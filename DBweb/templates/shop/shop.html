@@ -39,22 +39,29 @@
                         <div class="col-md-9" style="background-color: #FFFFFF;">
                             <div class="row">
                                 <div class="col-md-8" style="background-color: #FFFFFF;">
-                                    <h3>商品{{item.name}}</h3>
-                                    <h5>价格 {{item.price}}</h5>
-                                    <h5>数量 {{item.quantity}}</h5>
-                                    <h5>类别 {{item.category}}</h5>
+                                    <h3>商品{{item.goods.name}}</h3>
+                                    <h5>价格 {{item.goods.price}}</h5>
+                                    <h5>数量 {{item.goods.quantity}}</h5>
+                                    <h5>类别 {{item.goods.category}}</h5>
                                 </div>
                                 <div class="col-md-4" style="background-color: #FFFFFF;">
                                     <h1></h1>
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal{{item.id}}">查看详情</button>
-                                    <div class="modal fade" id="myModal{{item.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal{{item.goods.id}}">查看详情</button>
+                                    <div class="modal fade" id="myModal{{item.goods.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                                     <h4 class="modal-title" id="myModalLabel">商品详情</h4>
                                                 </div>
-                                                <div class="modal-body">{{item.detail}}</div>
+                                                <div class="modal-body">{{item.goods.detail}}</div>
+                                                <HR style="border:3 double #987cb9" width="100%" color=#987cb9 SIZE=3>
+                                                <div align="center">商品评论
+                                                </div>
+                                                <HR style="border:3 double #987cb9" width="100%" color=#987cb9 SIZE=3>
+                                                {% for comment in item.comment %}
+                                                <div class="modal-body">{{comment.detail}}</div>
+                                                {% endfor %}
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                                                 </div>
@@ -62,11 +69,11 @@
                                         </div><!-- /.modal -->
                                     </div>
                                     <h1></h1>
-                                    <a href="modify/?id={{item.id}}"> <button type="button" class="btn btn-waining">修改商品</button></a>
+                                    <a href="modify/?id={{item.goods.id}}"> <button type="button" class="btn btn-waining">修改商品</button></a>
                                     <h1></h1>
-                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModalDel{{item.id}}">商品下架</button>
+                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModalDel{{item.goods.id}}">商品下架</button>
                                     <h1></h1>
-                                    <div class="modal fade" id="myModalDel{{item.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabelDel" aria-hidden="true">
+                                    <div class="modal fade" id="myModalDel{{item.goods.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabelDel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -76,7 +83,7 @@
                                                 <div class="modal-body">是否确定要删除该商品？</div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                                                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="goods_del({{item.id}})">确定</button>
+                                                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="goods_del({{item.goods.id}})">确定</button>
                                                 </div>
                                             </div><!-- /.modal-content -->
                                         </div><!-- /.modal -->
@@ -116,16 +123,16 @@
     {% else %}
         <div class="container">
             <div class="row" >
-                <div class="col-md-2" style="background-color: #dedef8; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
+                <div class="col-md-2" style="background-color: #FFFFFF;">
                 </div>
-                <div class="col-md-8" style="background-color: #dedef8; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
+                <div class="col-md-8" style="background-color: #FFFFFF;">
                     <h1>
                         <span class="label label-primary">你好,{{ request.session.user_name }}！欢迎回来！</span>
                         <a href="./register"><button type="button" class="btn btn-primary">商品上架</button></a>
                     </h1>
                     <h1><span class="label label-primary">你的店铺中暂无商品</span></h1>
                 </div>
-                <div class="col-md-2" style="background-color: #dedef8; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
+                <div class="col-md-2" style="background-color: #FFFFFF;">
                 </div>
             </div>
         </div>
