@@ -246,7 +246,7 @@ def goods_modify(request):
     :return:
     """
     if request.method == "POST":
-        goods_register_form = GoodsRegisterForm(request.POST)
+        goods_register_form = GoodsRegisterForm(request.POST, request.FILES)
         if goods_register_form.is_valid():  # 获取数据
             goods_id = request.session['cur_goods_id']
             try:
@@ -258,6 +258,7 @@ def goods_modify(request):
             goods.quantity = goods_register_form.cleaned_data['quantity']
             goods.detail = goods_register_form.cleaned_data['detail']
             goods.category = goods_register_form.cleaned_data['category']
+            goods.img_url = goods_register_form.cleaned_data['img']
             goods.save()
             return redirect('/shop/')
     try:
@@ -267,9 +268,11 @@ def goods_modify(request):
                                                          'price': goods_obj.price,
                                                         'quantity': goods_obj.quantity,
                                                         'detail': goods_obj.detail,
-                                                        'category': goods_obj.category})
+                                                        'category': goods_obj.category,
+                                                         'img':goods_obj.img_url})
         request.session['cur_goods_id'] = goods_id  # 用session保留goods_id的访问
     except models.Goods.DoesNotExist:
+        print("Error:modify")
         goods_register_form = GoodsRegisterForm()
     return render(request, 'shop/modify.html', locals())
 
@@ -448,7 +451,7 @@ def order_get_by_status(order_status, buyer_id):
             goods_list.append({'goods': goods,
                                'order': item})
         except models.Goods.DoesNotExist:
-            print("Error")
+            print("Error:order_get_by_status")
     return goods_list
 
 
