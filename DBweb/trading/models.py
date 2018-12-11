@@ -43,6 +43,7 @@ class Goods(models.Model):
     validity = models.BooleanField()
     detail = models.CharField(max_length=256)
     category = models.CharField(max_length=256)
+    img_url = models.ImageField(upload_to='img')
 
 
 class UserFavourites(models.Model):

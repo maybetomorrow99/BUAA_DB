@@ -1,14 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>图片上传</title>
-</head>
-<body>
-    <form action="" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type="file" name="img">
-        <input type="submit" value="上传">
-    </form>
-</body>
-</html>
+{% extends 'login/base.html' %}
+
+{% block title %}注册{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="col-md-4 col-md-offset-4">
+          <form enctype="multipart/form-data" class='form-register' action="/uploadImg/" method="post">
+
+              {% if message %}
+                  <div class="alert alert-warning">{{ message }}</div>
+              {% endif %}
+
+              {% csrf_token %}
+
+              <h2 class="text-center">欢迎注册</h2>
+              <div class="form-group">
+                  {{ img_form.img.label_tag }}
+                  {{ img_form.img}}
+              </div>
+
+              <button type="reset" class="btn btn-default pull-left">重置</button>
+              <button type="submit" class="btn btn-primary pull-right">提交</button>
+
+          </form>
+        </div>
+    </div> <!-- /container -->
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+    <!--<meta charset="UTF-8">-->
+    <!--<title>图片上传</title>-->
+<!--</head>-->
+<!--<body>-->
+    <!--<form action="" method="post" enctype="multipart/form-data">-->
+        <!--{% csrf_token %}-->
+        <!--<input type="file" name="img">-->
+        <!--<input type="submit" value="上传">-->
+    <!--</form>-->
+<!--</body>-->
+<!--</html>-->
+
+{% endblock %}

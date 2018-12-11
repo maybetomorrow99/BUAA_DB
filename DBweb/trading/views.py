@@ -1,7 +1,7 @@
 # -*- coding:utf8 -*-
 from django.shortcuts import render, redirect
 from . import models
-from .forms import UserForm, RegisterForm, GoodsRegisterForm
+from .forms import UserForm, RegisterForm, GoodsRegisterForm, ImgForm
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -126,9 +126,6 @@ def logout(request):
     # del request.session['user_id']
     # del request.session['user_name']
     return redirect("/index/")
-    # test git
-    # test git2
-    # test git3
 
 
 @csrf_exempt
@@ -139,7 +136,16 @@ def view(request):
     :return:
     """
     content = {}
-    goods = models.Goods.objects.all()
+    goods_set = models.Goods.objects.all()
+
+    goods = []
+    for item in goods_set:
+        try:
+            comment_list = models.Comment.objects.filter(goods=item.id)
+            goods.append({'goods': item, 'comment': comment_list})
+        except models.Goods.DoesNotExist:
+            print("Error")
+
     page_robot = Paginator(goods, 4)
     page_num = request.GET.get("page")
     try:
@@ -184,7 +190,16 @@ def shop(request):
     """
     content = {}
     shop_id = models.Shop.objects.filter(shop_owner=request.session['user_id'])[0].id
-    goods = models.Goods.objects.filter(shop_id=shop_id)
+    goods_set = models.Goods.objects.filter(shop_id=shop_id)
+
+    goods = []
+    for item in goods_set:
+        try:
+            comment_list = models.Comment.objects.filter(goods=item.id)
+            goods.append({'goods': item, 'comment': comment_list})
+        except models.Goods.DoesNotExist:
+            print("Error")
+
     page_robot = Paginator(goods, 4)
     page_num = request.GET.get("page")
     try:
@@ -206,9 +221,8 @@ def goods_register(request):
     :param request:
     :return:
     """
-
     if request.method == "POST":
-        goods_register_form = GoodsRegisterForm(request.POST)
+        goods_register_form = GoodsRegisterForm(request.POST, request.FILES)
         if goods_register_form.is_valid():  # 获取数据
             shop_id = models.Shop.objects.filter(shop_owner=request.session['user_id'])[0].id
             name = goods_register_form.cleaned_data['name']
@@ -216,8 +230,9 @@ def goods_register(request):
             quantity = goods_register_form.cleaned_data['quantity']
             detail = goods_register_form.cleaned_data['detail']
             category = goods_register_form.cleaned_data['category']
+            img = goods_register_form.cleaned_data['img']
             new_good = models.Goods(shop_id=shop_id, name=name,price=price, quantity=quantity, validity=True,
-                                    detail=detail, category=category)
+                                    detail=detail, category=category, img_url=img)
             new_good.save()
             return redirect('/shop/')
     goods_register_form = GoodsRegisterForm()
@@ -453,20 +468,34 @@ def comment(request):
             new_comment.save()
         except models.Goods.DoesNotExist:
             print("Error")
-        # new_comment.save()
 
         return render(request, 'order/order.html')
 
 
 def comment_view(request):
-    return render(request, 'order/order.html')
+    # if request.method == "POST":
+    # goods_id = request.data.get('id')
+    goods_id = 18
+    comment_list = models.Comment.objects.filter(goods=goods_id)
+    print(comment_list)
+    return render(request, 'order/order.html', locals())
 
 
 def uploadImg(request): # 图片上传函数
-    if request.method == 'POST':
-        img = models.Img(img_url=request.FILES.get('img'))
-        img.save()
-    return render(request, 'login/imgupload.html')
+    # if request.method == 'POST':
+    #     img = models.Img(img_url=request.FILES.get('img'))
+    #     img.save()
+    # return render(request, 'login/imgupload.html')
+    if request.method == "POST":
+        img_form = ImgForm(request.POST, request.FILES)
+        message = "请检查填写的内容！"
+        if img_form.is_valid():  # 获取数据
+            img = img_form.cleaned_data['img']
+            new_img = models.Img(img_url=img)
+            new_img.save()
+            return redirect('login/showImg/')  # 自动跳转到登录页面
+    img_form = ImgForm()
+    return render(request, 'login/imgupload.html', locals())
 
 
 def showImg(request):
