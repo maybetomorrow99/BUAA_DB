@@ -37,6 +37,7 @@ urlpatterns = [
     url(r'^order/order_pay/$', views.order_pay),
     url(r'^order/order_cancel/$', views.order_cancel),
     url(r'^order/order_buyer_confirm/$', views.order_buyer_confirm),
+    url(r'^order/comment/$', views.comment),
     url(r'^col/favourites_del/$', views.favourites_del),
     url(r'^view/order_submit/$', views.order_submit),
     url(r'uploadImg/', views.uploadImg),

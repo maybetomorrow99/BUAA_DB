@@ -356,6 +356,7 @@ def order_submit(request):
         new_order.save()
     return render(request, 'order/order.html')
 
+
 @api_view(['GET', 'POST'])
 def order_pay(request):
     """
@@ -369,6 +370,7 @@ def order_pay(request):
         return redirect('/order/')
     return redirect('/order/')
 
+
 @api_view(['GET', 'POST'])
 def order_seller_confirm(request):
     """
@@ -381,6 +383,7 @@ def order_seller_confirm(request):
         models.Order.objects.filter(id=order_id).update(status=3)
     return redirect('/order/')
 
+
 @api_view(['GET', 'POST'])
 def order_buyer_confirm(request):
     """
@@ -392,6 +395,7 @@ def order_buyer_confirm(request):
         order_id = request.data.get('data')
         models.Order.objects.filter(id=order_id).update(status=3)
     return redirect('/order/')
+
 
 @api_view(['GET', 'POST'])
 def order_cancel(request):
@@ -409,7 +413,7 @@ def order_view(request):
     """
     buyer_id = request.session['user_id']
     goods_list0 = order_get_by_status(0, buyer_id)
-    g0=goods_list0.__len__()
+    g0 = goods_list0.__len__()
     goods_list1 = order_get_by_status(1, buyer_id)
     g1 = goods_list1.__len__()
     goods_list2 = order_get_by_status(2, buyer_id)
@@ -433,21 +437,25 @@ def order_get_by_status(order_status, buyer_id):
     return goods_list
 
 
-# 这个函数没有写好，先留出框架
+# 这个函数没有写好
+@api_view(['GET', 'POST'])
 def comment(request):
     if request.method == "POST":
-        register_form = CommentForm(request.POST)
-        message = "请检查填写的内容！"
-        if register_form.is_valid():  # 获取数据
-            goods_id = 1
-            detail = comment_form.cleaned_data['detail']
-            satisfaction = comment_form.cleaned_data['satisfaction']
+        detail = request.data.get('detail')
+        satisfaction = 0
 
-            new_comment = models.Comment(goods_id=goods_id, detail=detail, satisfaction=satisfaction)
-            # new_comment.save()
-            return redirect('/order/')
-    register_form = CommentForm()
-    return render(request, 'order/order.html', locals())
+        order_id = request.data.get('id')
+        order_obj = models.Goods.objects.get(id=order_id)
+        goods_id = order_obj.goods_id
+
+        new_comment = models.Comment(goods_id=goods_id, detail=detail, satisfaction=satisfaction)
+        # new_comment.save()
+        print(order_id, detail)
+        return render(request, 'order/order.html')
+
+
+def comment_view(request):
+    return render(request, 'order/order.html')
 
 
 def uploadImg(request): # 图片上传函数
