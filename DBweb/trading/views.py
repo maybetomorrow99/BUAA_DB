@@ -86,9 +86,10 @@ def register(request):
                 message = "两次输入的密码不同！"
                 return render(request, 'login/register.html', locals())
             else:
-                same_account_user = models.User.objects.filter(name=account)
+                same_account_user = models.User.objects.filter(account=account)
                 if same_account_user:  # 用户名唯一
                     message = '用户已经存在，请重新选择用户名！'
+                    print(1111)
                     return render(request, 'login/register.html', locals())
 
                 # 当一切都OK的情况下，创建新用户
