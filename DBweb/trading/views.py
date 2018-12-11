@@ -135,30 +135,33 @@ def view(request):
     :param request:
     :return:
     """
-    content = {}
-    goods_set = models.Goods.objects.all()
+    if request.session.get('is_login', None):
+        content = {}
+        goods_set = models.Goods.objects.all()
 
-    goods = []
-    for item in goods_set:
+        goods = []
+        for item in goods_set:
+            try:
+                comment_list = models.Comment.objects.filter(goods=item.id)
+                goods.append({'goods': item, 'comment': comment_list})
+            except models.Goods.DoesNotExist:
+                print("Error")
+
+        page_robot = Paginator(goods, 4)
+        page_num = request.GET.get("page")
         try:
-            comment_list = models.Comment.objects.filter(goods=item.id)
-            goods.append({'goods': item, 'comment': comment_list})
-        except models.Goods.DoesNotExist:
-            print("Error")
-
-    page_robot = Paginator(goods, 4)
-    page_num = request.GET.get("page")
-    try:
-        goods_list = page_robot.page(page_num)
-    except EmptyPage:
-        goods_list = page_robot.page(1)
-    except PageNotAnInteger:
-        goods_list = page_robot.page(1)
-    content["goods"] = goods
-    content["goods_list"] = goods_list
-    content["page_robot"] = page_robot
-    content["total_number"]= get_num_paginator(page_robot, goods_list.number, 7)
-    return render(request, 'view/view.html', content)
+            goods_list = page_robot.page(page_num)
+        except EmptyPage:
+            goods_list = page_robot.page(1)
+        except PageNotAnInteger:
+            goods_list = page_robot.page(1)
+        content["goods"] = goods
+        content["goods_list"] = goods_list
+        content["page_robot"] = page_robot
+        content["total_number"]= get_num_paginator(page_robot, goods_list.number, 7)
+        return render(request, 'view/view.html', content)
+    else:
+        return render(request, 'view/view.html')
 
 
 def get_num_paginator(page_robot, num, total):
@@ -188,31 +191,34 @@ def shop(request):
     :param request:
     :return:
     """
-    content = {}
-    shop_id = models.Shop.objects.filter(shop_owner=request.session['user_id'])[0].id
-    goods_set = models.Goods.objects.filter(shop_id=shop_id)
+    if request.session.get('is_login', None):
+        content = {}
+        shop_id = models.Shop.objects.filter(shop_owner=request.session['user_id'])[0].id
+        goods_set = models.Goods.objects.filter(shop_id=shop_id)
 
-    goods = []
-    for item in goods_set:
+        goods = []
+        for item in goods_set:
+            try:
+                comment_list = models.Comment.objects.filter(goods=item.id)
+                goods.append({'goods': item, 'comment': comment_list})
+            except models.Goods.DoesNotExist:
+                print("Error")
+
+        page_robot = Paginator(goods, 4)
+        page_num = request.GET.get("page")
         try:
-            comment_list = models.Comment.objects.filter(goods=item.id)
-            goods.append({'goods': item, 'comment': comment_list})
-        except models.Goods.DoesNotExist:
-            print("Error")
-
-    page_robot = Paginator(goods, 4)
-    page_num = request.GET.get("page")
-    try:
-        goods_list = page_robot.page(page_num)
-    except EmptyPage:
-        goods_list = page_robot.page(1)
-    except PageNotAnInteger:
-        goods_list = page_robot.page(1)
-    content["goods"] = goods
-    content["goods_list"] = goods_list
-    content["page_robot"] = page_robot
-    content["total_number"] = get_num_paginator(page_robot, goods_list.number, 7)
-    return render(request, 'shop/shop.html', content)
+            goods_list = page_robot.page(page_num)
+        except EmptyPage:
+            goods_list = page_robot.page(1)
+        except PageNotAnInteger:
+            goods_list = page_robot.page(1)
+        content["goods"] = goods
+        content["goods_list"] = goods_list
+        content["page_robot"] = page_robot
+        content["total_number"] = get_num_paginator(page_robot, goods_list.number, 7)
+        return render(request, 'shop/shop.html', content)
+    else:
+        return render(request, 'shop/shop.html')
 
 
 def goods_register(request):
@@ -297,25 +303,28 @@ def col(request):
     :param request:
     :return:
     """
-    content = {}
-    goods = models.Goods.objects.filter(shop_id=-1)
-    user_id = request.session['user_id']
-    goods_set = models.UserFavourites.objects.filter(user_id=user_id)
-    for item in goods_set:
-        goods = goods | models.Goods.objects.filter(id=item.goods_id)
-    page_robot = Paginator(goods, 4)
-    page_num = request.GET.get("page")
-    try:
-        goods_list = page_robot.page(page_num)
-    except EmptyPage:
-        goods_list = page_robot.page(1)
-    except PageNotAnInteger:
-        goods_list = page_robot.page(1)
-    content["goods"] = goods
-    content["goods_list"] = goods_list
-    content["page_robot"] = page_robot
-    content["total_number"] = get_num_paginator(page_robot, goods_list.number, 7)
-    return render(request, 'col/col.html', content)
+    if request.session.get('is_login', None):
+        content = {}
+        goods = models.Goods.objects.filter(shop_id=-1)
+        user_id = request.session['user_id']
+        goods_set = models.UserFavourites.objects.filter(user_id=user_id)
+        for item in goods_set:
+            goods = goods | models.Goods.objects.filter(id=item.goods_id)
+        page_robot = Paginator(goods, 4)
+        page_num = request.GET.get("page")
+        try:
+            goods_list = page_robot.page(page_num)
+        except EmptyPage:
+            goods_list = page_robot.page(1)
+        except PageNotAnInteger:
+            goods_list = page_robot.page(1)
+        content["goods"] = goods
+        content["goods_list"] = goods_list
+        content["page_robot"] = page_robot
+        content["total_number"] = get_num_paginator(page_robot, goods_list.number, 7)
+        return render(request, 'col/col.html', content)
+    else:
+        return render(request, 'col/col.html')
 
 
 @api_view(['GET', 'POST'])
@@ -429,18 +438,20 @@ def order_view(request):
     :param request:
     :return:
     """
-    buyer_id = request.session['user_id']
-    goods_list0 = order_get_by_status(0, buyer_id)
-    g0 = goods_list0.__len__()
-    goods_list1 = order_get_by_status(1, buyer_id)
-    g1 = goods_list1.__len__()
-    goods_list2 = order_get_by_status(2, buyer_id)
-    g2 = goods_list2.__len__()
-    goods_list3 = order_get_by_status(3, buyer_id)
-    g3 = goods_list3.__len__()
+    if request.session.get('is_login', None):
+        buyer_id = request.session['user_id']
+        goods_list0 = order_get_by_status(0, buyer_id)
+        g0 = goods_list0.__len__()
+        goods_list1 = order_get_by_status(1, buyer_id)
+        g1 = goods_list1.__len__()
+        goods_list2 = order_get_by_status(2, buyer_id)
+        g2 = goods_list2.__len__()
+        goods_list3 = order_get_by_status(3, buyer_id)
+        g3 = goods_list3.__len__()
 
-    return render(request, 'order/order.html', locals())
-
+        return render(request, 'order/order.html', locals())
+    else:
+        return render(request, 'order/order.html')
 
 def order_get_by_status(order_status, buyer_id):
     order_list = models.Order.objects.filter(buyer_id=buyer_id, status=order_status)
