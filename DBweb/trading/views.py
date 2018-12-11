@@ -442,15 +442,19 @@ def order_get_by_status(order_status, buyer_id):
 def comment(request):
     if request.method == "POST":
         detail = request.data.get('detail')
-        satisfaction = 0
+        satisfaction = request.data.get('score')
 
         order_id = request.data.get('id')
-        order_obj = models.Goods.objects.get(id=order_id)
-        goods_id = order_obj.goods_id
-
-        new_comment = models.Comment(goods_id=goods_id, detail=detail, satisfaction=satisfaction)
+        print(detail,order_id,satisfaction)
+        try:
+            order_obj = models.Order.objects.get(id=order_id)
+            goods= models.Goods.objects.get(id=order_obj.goods_id)
+            new_comment = models.Comment(goods=goods, detail=detail, satisfaction=satisfaction)
+            new_comment.save()
+        except models.Goods.DoesNotExist:
+            print("Error")
         # new_comment.save()
-        print(order_id, detail)
+
         return render(request, 'order/order.html')
 
 

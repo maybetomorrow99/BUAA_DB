@@ -1,4 +1,5 @@
 {% extends '../login/base.html' %}
+{% load staticfiles %}
 {% block title %}订单查询{% endblock %}
 {% block content %}
     {% if request.session.is_login %}
@@ -127,11 +128,17 @@
                                                                 </div>
                                                                 <form id="form_data">
                                                                 <div class="modal-body">
-                                                                    <textarea id="comment_detail" name="comment_detail" style="width: 100%; height: 200px"></textarea>
+                                                                    <textarea id="comment_detail" name="comment_detail" style="width: 100%; height: 180px"></textarea>
+                                                                    请为本次订单评分<br /><br />
+                                                                    <label><input name="Score" type="radio" id="1" />   1   </label>
+                                                                    <label><input name="Score" type="radio" id="2" />   2   </label>
+                                                                    <label><input name="Score" type="radio" id="3" />   3   </label>
+                                                                    <label><input name="Score" type="radio" id="4" />   4   </label>
+                                                                    <label><input name="Score" type="radio" id="5" checked="checked"/>   5   </label>
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                                                                    <button type="button" onclick="comment({{item.order.id}},comment_detail.text)" class="btn btn-primary" data-dismiss="modal">提交评价</button>
+                                                                    <button type="button" onclick="comment({{item.order.id}})" class="btn btn-primary" data-dismiss="modal">提交评价</button>
                                                                 </div>
                                                                 </form>
                                                             </div><!-- /.modal-content -->
@@ -244,14 +251,18 @@
                 }
             })
     }
-    function comment(id, detail){
+    function comment(id){
+            var detail =$("#comment_detail").val();
+            var Score = $("[name='Score']").filter(":checked");
+            var score = Score.attr("id");
             $.ajax({
                 url:"/order/comment/",
                 type:"POST",
                 contentType: "application/json",
                 data:JSON.stringify({
                     'id':id,
-                    'detail':detail
+                    'detail':detail,
+                    'score':score
                 }),
                 success:function(response){
                     alert(detail);

@@ -72,7 +72,7 @@ class Img(models.Model):
 
 
 class Comment(models.Model):
-    goods_id = models.ForeignKey(
+    goods = models.ForeignKey(
         'Goods',
         on_delete=models.CASCADE,
     )
