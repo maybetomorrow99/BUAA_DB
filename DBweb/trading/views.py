@@ -34,7 +34,7 @@ def login(request):
     """
     user login
     :param request:
-    :return:
+    :return:c
     """
 
     if request.session.get('is_login', None):
@@ -140,11 +140,10 @@ def view(request):
     if request.session.get('is_login', None):
         content = {}
         name = request.POST.get('searchbox')
-        if name==None or name=="":
-            goods_set = models.Goods.objects.all()
+        if name is None or name is "":
+            goods_set = models.Goods.objects.filter(quantity__gt=0)
         else:
-            goods_set = models.Goods.objects.filter(name=name)
-
+            goods_set = models.Goods.objects.filter(name__icontains=name)
 
         goods = []
         for item in goods_set:
@@ -386,8 +385,13 @@ def order_submit(request):
         goods_id = request.data.get('data')
         status = 1
         type = 0
-        new_order = models.Order(buyer_id=buyer_id, goods_id=goods_id, status=status, type=type)
-        new_order.save()
+
+        goods = models.Goods.objects.get(id=goods_id)
+        if goods.quantity > 0:
+            goods.quantity = goods.quantity - 1
+            goods.save()
+            new_order = models.Order(buyer_id=buyer_id, goods_id=goods_id, status=status, type=type)
+            new_order.save()
     return render(request, 'order/order.html')
 
 
@@ -436,6 +440,10 @@ def order_cancel(request):
     if request.method == 'POST':
         order_id = request.data.get('data')
         models.Order.objects.filter(id=order_id).update(status=0)
+        order_obj = models.Order.objects.get(id=order_id)
+        goods = models.Goods.objects.get(id=order_obj.goods_id)
+        goods.quantity = goods.quantity + 1
+        goods.save()
     return redirect('/order/')
 
 
@@ -456,9 +464,14 @@ def order_view(request):
         goods_list3 = order_get_by_status(3, buyer_id)
         g3 = goods_list3.__len__()
 
+        shop_id = models.Shop.objects.filter(shop_owner=request.session['user_id'])[0].id
+        goods_list_seller = order_get_seller(shop_id)
+        gs = goods_list_seller.__len__()
+
         return render(request, 'order/order.html', locals())
     else:
         return render(request, 'order/order.html')
+
 
 def order_get_by_status(order_status, buyer_id):
     order_list = models.Order.objects.filter(buyer_id=buyer_id, status=order_status)
@@ -470,6 +483,23 @@ def order_get_by_status(order_status, buyer_id):
                                'order': item})
         except models.Goods.DoesNotExist:
             print("Error:order_get_by_status")
+    return goods_list
+
+
+def order_get_seller(seller_id):
+    order_list = models.Order.objects.filter(goods_id=-1)
+    goods_set = models.Goods.objects.filter(shop_id=seller_id)
+    for item in goods_set:
+        order_list = order_list | models.Order.objects.filter(goods_id=item.id)
+
+    goods_list = []
+    for item in order_list:
+        try:
+            goods = models.Goods.objects.get(id=item.goods_id)
+            goods_list.append({'goods': goods,
+                               'order': item})
+        except models.Goods.DoesNotExist:
+            print("Error:order_get_seller")
     return goods_list
 
 
