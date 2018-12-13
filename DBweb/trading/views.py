@@ -143,7 +143,7 @@ def view(request):
         if name is None or name is "":
             goods_set = models.Goods.objects.filter(quantity__gt=0)
         else:
-            goods_set = models.Goods.objects.filter(name__icontains=name)
+            goods_set = models.Goods.objects.filter(name__icontains=name, quantity__gt=0)
 
         goods = []
         for item in goods_set:
