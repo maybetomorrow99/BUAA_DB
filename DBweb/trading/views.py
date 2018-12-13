@@ -1,5 +1,5 @@
 # -*- coding:utf8 -*-
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from . import models
 from .forms import UserForm, RegisterForm, GoodsRegisterForm, ImgForm
 from rest_framework.decorators import api_view
@@ -130,6 +130,7 @@ def logout(request):
 
 
 @csrf_exempt
+@api_view(['GET', 'POST'])
 def view(request):
     """
     display the goods in the database on the page
@@ -138,7 +139,12 @@ def view(request):
     """
     if request.session.get('is_login', None):
         content = {}
-        goods_set = models.Goods.objects.all()
+        name = request.POST.get('searchbox')
+        if name==None or name=="":
+            goods_set = models.Goods.objects.all()
+        else:
+            goods_set = models.Goods.objects.filter(name=name)
+
 
         goods = []
         for item in goods_set:

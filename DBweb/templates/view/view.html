@@ -12,10 +12,20 @@
                     'data':dataname
                 }),
             })
-            $('body').on('hidden.bs.modal', '.modal', function () {
-                $(this).removeData('bs.modal');
-            });
         }
+
+        function search(){
+            var text =$("#searchbox").val();
+            $.ajax({
+                url:"/view/",
+                type:"POST",
+                contentType: "application/json",
+                data:JSON.stringify({
+                    'data':text
+                }),
+            })
+        }
+
         function order_submit(dataname){
             alert("已加入订单!");
             $.ajax({
@@ -26,9 +36,6 @@
                     'data':dataname
                 }),
             })
-            $('body').on('hidden.bs.modal', '.modal', function () {
-                $(this).removeData('bs.modal');
-            });
         }
 </script>
     {% if request.session.is_login %}

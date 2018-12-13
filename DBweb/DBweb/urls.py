@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^order/$', views.order_view),
     url(r'^shop/$', views.shop),
     url(r'^view/$', views.view),
+    #url(r'^view/search/$', views.search),
     url(r'^view/get_detail/$', views.get_detail),
     url(r'^view/add_favourites/$', views.favourites_add),
     url(r'^shop/register/$', views.goods_register),

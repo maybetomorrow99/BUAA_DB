@@ -3,23 +3,34 @@
 {% block content %}
 <script type="text/javascript">
         function favourites_del(dataname){
-//		alert(dataname);
-		$.ajax({
-			url:"/col/favourites_del/",
-			type:"POST",
-			contentType: "application/json",
-			data:JSON.stringify({
-				'data':dataname
-			}),
-			success:function(response){
-//				window.wxc.xcConfirm("成功", window.wxc.xcConfirm.typeEnum.success);
-				window.location.href = "http://localhost:8000/col/";
-			},
-	    	error:function(response){
-//	    		window.wxc.xcConfirm("失败", window.wxc.xcConfirm.typeEnum.error);
-	    	}
-		})
+    //		alert(dataname);
+            $.ajax({
+                url:"/col/favourites_del/",
+                type:"POST",
+                contentType: "application/json",
+                data:JSON.stringify({
+                    'data':dataname
+                }),
+                success:function(response){
+    //				window.wxc.xcConfirm("成功", window.wxc.xcConfirm.typeEnum.success);
+                    window.location.href = "http://localhost:8000/col/";
+                },
+                error:function(response){
+    //	    		window.wxc.xcConfirm("失败", window.wxc.xcConfirm.typeEnum.error);
+                }
+            })
 	}
+	function order_submit(dataname){
+            alert("已加入订单!");
+            $.ajax({
+                url:"/view/order_submit/",
+                type:"POST",
+                contentType: "application/json",
+                data:JSON.stringify({
+                    'data':dataname
+                }),
+            })
+        }
 </script>
     {% if request.session.is_login %}
     {% if goods_list %}
@@ -61,7 +72,7 @@
                                         </div><!-- /.modal -->
                                     </div>
                                     <h1></h1>
-                                    <button type="button" class="btn btn-success">购买租赁</button>
+                                    <button type="button" class="btn btn-success" onclick="order_submit({{item.id}})">购买租赁</button>
                                     <h1></h1>
                                     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModalCol{{item.id}}">移出收藏</button>
                                     <h1></h1>
