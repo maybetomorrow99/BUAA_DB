@@ -76,7 +76,11 @@
                                                 </div>
                                                 <HR style="border:3 double #987cb9" width="100%" color=#987cb9 SIZE=3>
                                                 {% for comment in item.comment %}
-                                                <div class="modal-body">{{comment.detail}}</div>
+                                                <div class="modal-body">
+                                                    <h4>评价时间：{{comment.comment_time}}</h4>
+                                                    <h4>满意度：{{comment.satisfaction}}</h4>
+                                                    <h5>{{comment.detail}}</h5>
+                                                </div>
                                                 {% endfor %}
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -122,7 +126,7 @@
             </ul>
         </div>
         {% else %}
-        <p>There are no goods in the library</p>
+        <img src="../../static/pic/a.jpg" width="100%"/>
         {% endif %}
         <p></p>
     {% else %}

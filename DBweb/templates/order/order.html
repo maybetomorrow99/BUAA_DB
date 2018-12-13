@@ -192,6 +192,54 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion"
+                                    href="#collapseFive">
+                                    卖家订单总览  <span class="badge">{{gs}}</span>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseFive" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    {% for item in goods_list_seller %}
+                                    <div class="row">
+                                        <div class="col-md-3" style="background-color: #FFFFFF;">
+                                            <h1></h1>
+                                            <img src="../media/{{item.goods.img_url}}" width="100%" height="100%"/>
+                                            <h1></h1>
+                                        </div>
+                                        <div class="col-md-9" style="background-color: #FFFFFF;">
+                                            <div class="row">
+                                                <div class="col-md-8" style="background-color: #FFFFFF;">
+                                                    <h3>商品{{item.goods.name}}</h3>
+                                                    <h5>价格 {{item.goods.price}}</h5>
+                                                    <h5>数量 {{item.goods.quantity}}</h5>
+                                                    <h5>类别 {{item.goods.category}}</h5>
+                                                </div>
+                                                <div class="col-md-4" style="background-color: #FFFFFF;">
+                                                    <h1></h1>
+                                                    <h1>订单状态</h1>
+                                                    {% if item.order.status == 0 %}
+                                                        <h1>已取消</h1>
+                                                    {% elif item.order.status == 1 %}
+                                                        <h1>待支付</h1>
+                                                    {% elif item.order.status == 2 %}
+                                                        <h1>待发货</h1>
+                                                    {% else %}
+                                                        <h1>已完成</h1>
+                                                    {% endif %}
+                                                    <h1></h1>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <HR style="border:3 double #987cb9" width="100%" color=#987cb9 SIZE=3>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-2" style="background-color: #FFFFFF;">
